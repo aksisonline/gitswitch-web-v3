@@ -1,0 +1,20 @@
+node_modules
+.DS_Store
+dist
+dist-ssr
+*.local
+.env
+.nitro
+.tanstack
+.wrangler
+.output
+.vinxi
+__unconfig*
+todos.json
+
+# build-time generated content (synced from git-switcher repo)
+src/generated/
+.docs-cache/
+
+.source/
+content/docs/
