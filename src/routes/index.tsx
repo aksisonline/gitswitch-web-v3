@@ -2,9 +2,15 @@ import { createFileRoute } from '@tanstack/react-router'
 import TuiWidget from '../components/TuiWidget'
 import InstallTabs from '../components/InstallTabs'
 import InstallCards from '../components/InstallCards'
+import BootSequence from '../components/BootSequence'
 import { VERSION } from '../generated/meta'
 
 export const Route = createFileRoute('/')({ component: Home })
+
+const LOGO = String.raw`  ___  _  _      ___        _  _      _
+ / __|(_)| |_   / __| __ __ __(_)| |_  __ | |_
+| (_ || ||  _|  \__ \ \ V  V /| ||  _|/ _|| ' \
+ \___||_| \__|  |___/  \_/\_/ |_| \__|\__||_||_|`
 
 const FEATURES: Array<[string, React.ReactNode]> = [
   ['commit identity switching', <>Instantly change <code>user.name</code> and <code>user.email</code> in your global git config. No more wrong-email commits.</>],
@@ -31,7 +37,9 @@ function Home() {
       {/* Hero */}
       <section className="hero">
         <div className="hero-content rise-in">
-          <div className="hero-badge">{VERSION} · written in go</div>
+          <pre className="hero-logo" aria-hidden="true">{LOGO}</pre>
+          <BootSequence />
+          <div className="hero-badge">{VERSION} · written in go · insert coin</div>
           <h1>
             git identity manager.
             <br />
