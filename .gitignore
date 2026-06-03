@@ -17,4 +17,4 @@ src/generated/
 .docs-cache/
 
 .source/
-content/docs/
+# content/docs/ is committed — synced by CI, triggers Cloudflare deploy
