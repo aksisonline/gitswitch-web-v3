@@ -2,6 +2,7 @@ import { HeadContent, Outlet, Scripts, createRootRoute } from '@tanstack/react-r
 import Footer from '#/components/Footer'
 import Header from '#/components/Header'
 import EasterEggs from '#/components/EasterEggs'
+import CrtOverlay from '#/components/CrtOverlay'
 import { ThemeProvider } from '#/lib/theme-context'
 import { THEME_INIT_SCRIPT } from '#/lib/themes'
 import { RootProvider } from 'fumadocs-ui/provider/tanstack'
@@ -75,6 +76,7 @@ function RootDocument() {
             <Outlet />
             <Footer />
             <EasterEggs />
+            <CrtOverlay />
           </ThemeProvider>
         </RootProvider>
         <Scripts />

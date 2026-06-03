@@ -8,6 +8,7 @@ const TABS: Array<{ id: string; label: string; cmd: string }> = [
     label: 'curl',
     cmd: 'curl -fsSL https://raw.githubusercontent.com/aksisonline/gitswitch/main/.github/install.sh | bash',
   },
+  { id: 'windows', label: 'Windows', cmd: 'https://github.com/aksisonline/gitswitch/releases/latest' },
   { id: 'go', label: 'go install', cmd: 'go install github.com/aksisonline/gitswitch@latest' },
 ]
 
@@ -41,15 +42,23 @@ export default function InstallTabs() {
         </a>
       </div>
       <div className="hero-install-body">
-        <span className="hi-prompt">$</span>
-        <code className="hi-code">{cmd}</code>
-        <button
-          className={`hi-copy${copied ? ' copied' : ''}`}
-          onClick={copy}
-          aria-label="Copy install command"
-        >
-          {copied ? '✓' : 'copy'}
-        </button>
+        {cmd.startsWith('http') ? (
+          <a href={cmd} target="_blank" rel="noreferrer" className="install-row-link" style={{ flex: 1 }}>
+            ↗ github.com/aksisonline/gitswitch/releases/latest
+          </a>
+        ) : (
+          <>
+            <span className="hi-prompt">$</span>
+            <code className="hi-code">{cmd}</code>
+            <button
+              className={`hi-copy${copied ? ' copied' : ''}`}
+              onClick={copy}
+              aria-label="Copy install command"
+            >
+              {copied ? '✓' : 'copy'}
+            </button>
+          </>
+        )}
       </div>
     </div>
   )

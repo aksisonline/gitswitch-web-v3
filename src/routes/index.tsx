@@ -1,12 +1,19 @@
+import { type ReactNode } from 'react'
 import { createFileRoute } from '@tanstack/react-router'
 import TuiWidget from '../components/TuiWidget'
 import InstallTabs from '../components/InstallTabs'
-import InstallCards from '../components/InstallCards'
+import InstallList from '../components/InstallList'
+import BootSequence from '../components/BootSequence'
 import { VERSION } from '../generated/meta'
 
 export const Route = createFileRoute('/')({ component: Home })
 
-const FEATURES: Array<[string, React.ReactNode]> = [
+const LOGO = String.raw`  ___  _  _      ___        _  _      _
+ / __|(_)| |_   / __| __ __ __(_)| |_  __ | |_
+| (_ || ||  _|  \__ \ \ V  V /| ||  _|/ _|| ' \
+ \___||_| \__|  |___/  \_/\_/ |_| \__|\__||_||_|`
+
+const FEATURES: Array<[string, ReactNode]> = [
   ['commit identity switching', <>Instantly change <code>user.name</code> and <code>user.email</code> in your global git config. No more wrong-email commits.</>],
   ['ssh key management', <>Sets <code>core.sshCommand</code> to force a specific key with <code>IdentitiesOnly=yes</code>, preventing agent fallback.</>],
   ['gpg signing', <>Per-profile GPG signing key. Switch and your verified-commit badge follows the right identity automatically.</>],
@@ -31,7 +38,9 @@ function Home() {
       {/* Hero */}
       <section className="hero">
         <div className="hero-content rise-in">
-          <div className="hero-badge">{VERSION} · written in go</div>
+          <pre className="hero-logo" aria-hidden="true">{LOGO}</pre>
+          <BootSequence />
+          <div className="hero-badge">{VERSION} · written in go · insert coin</div>
           <h1>
             git identity manager.
             <br />
@@ -140,11 +149,7 @@ function Home() {
       <section id="install" className="section">
         <div className="section-label">install</div>
         <h2 className="section-title">up in 30 seconds.</h2>
-        <p className="section-sub">
-          Choose your preferred installation method. Homebrew is recommended for automatic
-          updates.
-        </p>
-        <InstallCards />
+        <InstallList />
       </section>
 
       {/* Roadmap */}
@@ -160,7 +165,7 @@ function Home() {
             <div className="frame-body">
               <p><strong>Rust rewrite</strong> reaches parity — ratatui TUI with full arcade theme + tachyonfx effects.</p>
               <p><strong>HTTPS credential helper</strong> — keychain-backed, so HTTPS cloners get the same magic as SSH users.</p>
-              <p><strong>Brand launch</strong> — finalized logo, gitswitch.dev, homebrew-core submission.</p>
+              <p><strong>Enterprise features</strong> — coming soon. Team profile policies, SSO-backed identities, and org-wide config.</p>
             </div>
           </div>
         </div>
