@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+  <rect width="100" height="100" fill="#2e3440" rx="16"/>
+  <text x="50" y="62" font-family="'JetBrains Mono', 'SF Mono', 'Fira Code', ui-monospace, monospace" font-size="52" text-anchor="middle" font-weight="600">
+    <tspan fill="#a3be8c">$</tspan><tspan fill="#88c0d0">✦</tspan>
+  </text>
+</svg>
