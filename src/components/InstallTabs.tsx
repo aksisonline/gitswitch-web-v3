@@ -8,7 +8,6 @@ const TABS: Array<{ id: string; label: string; cmd: string }> = [
     label: 'curl',
     cmd: 'curl -fsSL https://raw.githubusercontent.com/aksisonline/gitswitch/main/.github/install.sh | bash',
   },
-  { id: 'windows', label: 'Windows', cmd: 'https://github.com/aksisonline/gitswitch/releases/latest' },
   { id: 'go', label: 'go install', cmd: 'go install github.com/aksisonline/gitswitch@latest' },
 ]
 
