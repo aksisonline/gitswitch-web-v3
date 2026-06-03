@@ -966,11 +966,16 @@ kbd {
   margin: 0 0 0.6rem;
   min-width: 0;
   max-width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 .code-block code {
   font-size: 0.74rem;
   color: var(--text);
   white-space: pre;
+  flex: 1;
+  min-width: 0;
 }
 .footnote {
   font-size: 0.7rem;

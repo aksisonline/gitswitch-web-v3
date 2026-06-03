@@ -1,6 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router'
 import TuiWidget from '../components/TuiWidget'
 import InstallTabs from '../components/InstallTabs'
+import InstallCards from '../components/InstallCards'
 import { VERSION } from '../generated/meta'
 
 export const Route = createFileRoute('/')({ component: Home })
@@ -143,39 +144,17 @@ function Home() {
           Choose your preferred installation method. Homebrew is recommended for automatic
           updates.
         </p>
-        <div className="install-grid">
-          {[
-            ['homebrew — recommended', 'brew install aksisonline/tap/gitswitch', 'auto-updates with brew upgrade'],
-            ['curl — one-liner', 'curl -fsSL https://raw.githubusercontent.com/aksisonline/gitswitch/main/.github/install.sh | bash', 'works on macOS and Linux'],
-            ['go install', 'go install github.com/aksisonline/gitswitch@latest', 'requires go 1.22+'],
-          ].map(([title, cmd, note]) => (
-            <div className="install-card" key={title}>
-              <h4>{title}</h4>
-              <pre className="code-block">
-                <code>{cmd}</code>
-              </pre>
-              <div className="footnote">{note}</div>
-            </div>
-          ))}
-        </div>
+        <InstallCards />
       </section>
 
       {/* Roadmap */}
       <section id="roadmap" className="section">
         <div className="section-label">looking ahead</div>
         <h2 className="section-title">
-          <em>v0.2.0</em> in progress · <em>v1.0.0</em> the milestone
+          <em>v1.0.0</em> the milestone
         </h2>
-        <p className="section-sub">What's being built now and where this is going.</p>
+        <p className="section-sub">Where this is going.</p>
         <div className="roadmap-grid">
-          <div className="tui-frame">
-            <div className="frame-title">v0.2.0 · in development</div>
-            <div className="frame-body">
-              <p><strong>Multi-host profiles</strong> — one profile holds separate PATs and SSH keys for github.com and a self-hosted enterprise host.</p>
-              <p><strong>Session isolation</strong> — <code>gitswitch shell</code> gives each terminal its own identity. Built for parallel AI agents.</p>
-              <p><strong>Pre-commit safety net</strong> — warns before a wrong-identity commit ever lands.</p>
-            </div>
-          </div>
           <div className="tui-frame">
             <div className="frame-title">v1.0.0 · the milestone</div>
             <div className="frame-body">
