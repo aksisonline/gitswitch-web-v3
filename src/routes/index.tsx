@@ -168,7 +168,7 @@ function Home() {
             <div className="frame-body">
               <p><strong>Rust rewrite</strong> reaches parity — ratatui TUI with full arcade theme + tachyonfx effects.</p>
               <p><strong>HTTPS credential helper</strong> — keychain-backed, so HTTPS cloners get the same magic as SSH users.</p>
-              <p><strong>Brand launch</strong> — finalized logo, gitswitch.dev, homebrew-core submission.</p>
+              <p><strong>Enterprise features</strong> — coming soon. Team profile policies, SSO-backed identities, and org-wide config.</p>
             </div>
           </div>
         </div>
