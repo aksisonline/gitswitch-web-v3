@@ -161,19 +161,20 @@ function Home() {
         <p className="section-sub">gitswitch is Go all the way. Here's what's shipping.</p>
         <div className="roadmap-grid">
           <div className="tui-frame">
-            <div className="frame-title">shipped · canary</div>
+            <div className="frame-title">shipped · stable + canary</div>
             <div className="frame-body">
+              <p><strong>HTTPS credential helper</strong> — keychain-backed PAT routing so HTTPS clones and pushes just work alongside SSH.</p>
               <p><strong>GitHub OAuth login</strong> — <code>gitswitch login</code> authenticates via device flow, creates your profile automatically. No manual config.</p>
               <p><strong>Mouse support + TUI refresh</strong> — full mouse interaction, alias management, shell settings, and release notes built into the TUI.</p>
               <p><strong>Beta channel</strong> — <code>gitswitch beta</code> / <code>gitswitch stable</code> to opt in and out of canary builds from the CLI.</p>
             </div>
           </div>
           <div className="tui-frame">
-            <div className="frame-title">coming up · stable</div>
+            <div className="frame-title">coming up</div>
             <div className="frame-body">
-              <p><strong>HTTPS credential helper</strong> — keychain-backed PAT routing so HTTPS clones and pushes just work alongside SSH.</p>
               <p><strong>Multi-host profiles</strong> — one profile, multiple GitHub hosts (github.com + github.corp.com), each with its own key and token.</p>
               <p><strong>Session isolation</strong> — <code>gitswitch shell</code> gives each terminal its own identity via env vars. Parallel work, zero collisions.</p>
+              <p><strong>Doctor + diagnostics</strong> — per-repo identity health check with <code>--fix</code> for auto-repair and <code>--json</code> for agent use.</p>
             </div>
           </div>
           <div className="tui-frame">
