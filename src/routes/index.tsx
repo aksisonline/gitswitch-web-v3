@@ -156,16 +156,32 @@ function Home() {
       <section id="roadmap" className="section">
         <div className="section-label">looking ahead</div>
         <h2 className="section-title">
-          <em>v1.0.0</em> the milestone
+          what's <em>next</em>
         </h2>
-        <p className="section-sub">Where this is going.</p>
+        <p className="section-sub">gitswitch is Go all the way. Here's what's shipping next.</p>
         <div className="roadmap-grid">
+          <div className="tui-frame">
+            <div className="frame-title">v0.2.x · easy setup &amp; auth</div>
+            <div className="frame-body">
+              <p><strong>GitHub OAuth</strong> — <code>gitswitch login</code> authenticates via device flow, creates your profile automatically. No manual config.</p>
+              <p><strong>HTTPS credential helper</strong> — keychain-backed PAT routing so HTTPS clones and pushes just work alongside SSH.</p>
+              <p><strong>Beta channel</strong> — <code>gitswitch beta</code> / <code>gitswitch stable</code> to opt in and out of canary builds.</p>
+            </div>
+          </div>
+          <div className="tui-frame">
+            <div className="frame-title">v0.3.0 · multi-host &amp; power user</div>
+            <div className="frame-body">
+              <p><strong>Multi-host profiles</strong> — one profile, multiple GitHub hosts (github.com + github.corp.com), each with its own key and token.</p>
+              <p><strong>Session isolation</strong> — <code>gitswitch shell</code> gives each terminal its own identity via env vars. Parallel work, zero collisions.</p>
+              <p><strong>TUI refresh</strong> — 6-screen UI: Profiles, Hosts, Repos, Session, Doctor, Settings. Command palette included.</p>
+            </div>
+          </div>
           <div className="tui-frame">
             <div className="frame-title">v1.0.0 · the milestone</div>
             <div className="frame-body">
-              <p><strong>Rust rewrite</strong> reaches parity — ratatui TUI with full arcade theme + tachyonfx effects.</p>
-              <p><strong>HTTPS credential helper</strong> — keychain-backed, so HTTPS cloners get the same magic as SSH users.</p>
-              <p><strong>Enterprise features</strong> — coming soon. Team profile policies, SSO-backed identities, and org-wide config.</p>
+              <p><strong>Team presets</strong> — <code>gitswitch apply &lt;url&gt;</code> bootstraps all profiles from a shared signed config. One command onboarding.</p>
+              <p><strong>In-repo config</strong> — <code>.gitswitch.yaml</code> checked into the repo root declares required profiles and identity policies.</p>
+              <p><strong>Stability guarantee</strong> — semver commitment, stable config schema, and stable keychain key convention. No breaking changes without a major bump.</p>
             </div>
           </div>
         </div>
