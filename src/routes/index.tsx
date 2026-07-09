@@ -51,7 +51,7 @@ function Home() {
             <span className="comment"># Switch your name, email, SSH key, and GitHub account</span>
             <br />
             <span className="comment"># across profiles — instantly, without touching config files.</span>
-            <br />A mouse- and keyboard-driven TUI that gets out of your way.
+            <br />The one-click way to set up Git and GitHub for developers.
           </p>
           <div className="hero-actions">
             <a href="#install" className="btn-primary">
