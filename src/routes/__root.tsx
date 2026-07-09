@@ -10,7 +10,7 @@ import appCss from '#/styles.css?url'
 
 const TITLE = 'gitswitch — Git Account Switcher & Identity Manager'
 const DESC =
-  'A terminal UI to switch git identities, SSH keys, GPG signing, and GitHub profiles instantly. The easiest way to manage multiple git accounts.'
+  'The easy way to set up git and GitHub: one command handles identity, SSH keys, and GPG signing. Includes a built-in Claude Code skill for AI coding agents.'
 
 const softwareSchema = {
   '@context': 'https://schema.org',
@@ -35,7 +35,7 @@ export const Route = createRootRoute({
       {
         name: 'keywords',
         content:
-          'git account switcher, gitswitch, git config easy switching, git identity manager, multiple git accounts, switch git user, git ssh key management, git profile switcher, git commit identity, github account switcher, git gpg signing',
+          'git account switcher, gitswitch, git config easy switching, git identity manager, multiple git accounts, switch git user, git ssh key management, git profile switcher, git commit identity, github account switcher, git gpg signing, easy git setup, easy github setup, git setup for developers, claude code git skill, git setup for ai coding agents',
       },
       { name: 'author', content: 'Abhiram Kanna' },
       { name: 'robots', content: 'index, follow, max-image-preview:large, max-snippet:-1' },
