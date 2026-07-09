@@ -14,10 +14,12 @@ const LOGO = String.raw`  ___  _  _      ___        _  _      _
  \___||_| \__|  |___/  \_/\_/ |_| \__|\__||_||_|`
 
 const FEATURES: Array<[string, ReactNode]> = [
+  ['one-login setup', <><code>gitswitch login</code> — GitHub device flow creates your profile automatically: name, email, GitHub account, token. No manual config.</>],
   ['commit identity switching', <>Instantly change <code>user.name</code> and <code>user.email</code> in your global git config. No more wrong-email commits.</>],
   ['ssh key management', <>Sets <code>core.sshCommand</code> to force a specific key with <code>IdentitiesOnly=yes</code>, preventing agent fallback.</>],
   ['gpg signing', <>Per-profile GPG signing key. Switch and your verified-commit badge follows the right identity automatically.</>],
   ['github account sync', <>Keeps <code>gh</code> CLI auth in lockstep with your git identity — one switch, both updated.</>],
+  ['mouse-driven tui', <>Click, hover, and scroll through profiles, settings, and the setup wizard — not just arrow keys and enter.</>],
   ['identity awareness', <>Shell hook learns which identity you use per repo and suggests the right one when you <code>cd</code> in.</>],
   ['shell integration', <>One <code>gitswitch install</code> wires up your shell. Pin a profile to a repo and it just works.</>],
 ]
@@ -28,7 +30,7 @@ const COMPARE: Array<[string, string, string]> = [
   ['ssh key per identity', '✗', '✓'],
   ['gpg signing key', '✗', '✓'],
   ['per-repo auto-switch', '✗', '✓'],
-  ['interactive TUI', '✗', '✓'],
+  ['interactive TUI (mouse + keyboard)', '✗', '✓'],
   ['no runtime deps', '✗', '✓ (single binary)'],
 ]
 
@@ -51,7 +53,7 @@ function Home() {
             <span className="comment"># Switch your name, email, SSH key, and GitHub account</span>
             <br />
             <span className="comment"># across profiles — instantly, without touching config files.</span>
-            <br />A keyboard-driven TUI that gets out of your way.
+            <br />A mouse- and keyboard-driven TUI that gets out of your way.
           </p>
           <div className="hero-actions">
             <a href="#install" className="btn-primary">
