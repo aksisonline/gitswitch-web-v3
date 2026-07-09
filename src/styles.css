@@ -1224,39 +1224,7 @@ main,
   96% { opacity: 0.85; }
 }
 
-/* ── Boot / POST sequence ── */
-.boot-seq {
-  font-size: 0.72rem;
-  line-height: 1.7;
-  margin: 0 0 1.25rem;
-  min-height: 7.4em;
-  color: var(--text2);
-}
-.boot-line {
-  white-space: pre;
-}
-.boot-tic {
-  color: var(--accent);
-}
-.boot-accent {
-  color: var(--accent);
-  font-weight: 700;
-}
-.boot-check {
-  color: var(--text2);
-}
-.boot-check::after {
-  content: '';
-}
-.boot-cursor {
-  color: var(--cursor);
-  animation: blink 1.1s steps(2) infinite;
-}
 @media (max-width: 640px) {
-  .boot-seq {
-    font-size: 0.62rem;
-    min-height: 0;
-  }
   .hero-logo {
     display: none;
   }

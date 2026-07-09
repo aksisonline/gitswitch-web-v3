@@ -3,7 +3,6 @@ import { createFileRoute } from '@tanstack/react-router'
 import TuiWidget from '../components/TuiWidget'
 import InstallTabs from '../components/InstallTabs'
 import InstallList from '../components/InstallList'
-import BootSequence from '../components/BootSequence'
 import { VERSION } from '../generated/meta'
 
 export const Route = createFileRoute('/')({ component: Home })
@@ -41,7 +40,6 @@ function Home() {
       <section className="hero">
         <div className="hero-content rise-in">
           <pre className="hero-logo" aria-hidden="true">{LOGO}</pre>
-          <BootSequence />
           <div className="hero-badge">{VERSION} · written in go · insert coin</div>
           <h1>
             git identity manager.
