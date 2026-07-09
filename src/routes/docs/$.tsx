@@ -25,7 +25,21 @@ export const Route = createFileRoute('/docs/$')({
   },
   head: ({ loaderData }) => {
     if (!loaderData) return {}
-    return {}
+    const { title, description, url } = loaderData
+    const pageTitle = `${title} — gitswitch docs`
+    const canonicalUrl = `https://gitswitch.dev${url}`
+    return {
+      meta: [
+        { title: pageTitle },
+        { name: 'description', content: description },
+        { property: 'og:title', content: pageTitle },
+        { property: 'og:description', content: description },
+        { property: 'og:url', content: canonicalUrl },
+        { name: 'twitter:title', content: pageTitle },
+        { name: 'twitter:description', content: description },
+      ],
+      links: [{ rel: 'canonical', href: canonicalUrl }],
+    }
   },
   notFoundComponent: () => (
     <div style={{ padding: '2rem', fontFamily: 'monospace' }}>
@@ -42,6 +56,9 @@ const serverLoader = createServerFn({ method: 'GET' })
     if (!page) throw notFound()
     return {
       path: page.path,
+      url: page.url,
+      title: page.data.title,
+      description: page.data.description,
       markdownUrl: slugsToMarkdownPath(page.slugs).url,
       pageTree: await source.serializePageTree(source.getPageTree()),
     }

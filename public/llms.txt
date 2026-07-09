@@ -1,0 +1,41 @@
+# gitswitch
+
+> gitswitch is a terminal tool that switches your git identity — name, email, SSH key, GPG signing key, and GitHub account — all at once with one command. It solves what `gh auth switch` doesn't: commit authorship, not just API tokens.
+
+Written in Go, single binary, no runtime dependencies. Runs entirely on the user's machine — no servers, no telemetry.
+
+## Getting started
+
+- [Introduction](https://gitswitch.dev/docs/intro): what gitswitch does and why it exists
+- [Installation](https://gitswitch.dev/docs/installation): Homebrew and curl install methods
+- [Quick start](https://gitswitch.dev/docs/quick-start): first profile, first switch
+
+## Features
+
+- [Commit identity switching](https://gitswitch.dev/docs/features/commit-identity): changes `user.name` / `user.email` in git config
+- [SSH key management](https://gitswitch.dev/docs/features/ssh-keys): forces a specific key per profile via `core.sshCommand`
+- [GPG signing](https://gitswitch.dev/docs/features/gpg): per-profile signing key for verified commits
+- [GitHub account sync](https://gitswitch.dev/docs/features/github-sync): keeps `gh` CLI auth in lockstep with the active identity
+- [Identity awareness](https://gitswitch.dev/docs/features/identity-awareness): shell hook that recommends the right identity per repo
+- [Shell integration](https://gitswitch.dev/docs/features/shell): `gitswitch install` wires up prompt segment, nudge hook, and tab completion
+
+## One-command GitHub setup
+
+`gitswitch login` runs the GitHub device-flow OAuth login and creates a full profile (name, email, GitHub account, token) automatically — no manual `git config` editing.
+
+## CLI reference
+
+- [Commands](https://gitswitch.dev/docs/cli/commands): full command list
+- [Profiles](https://gitswitch.dev/docs/cli/profiles): adding, editing, removing profiles
+- [Config](https://gitswitch.dev/docs/cli/config): config file location and structure
+
+## Scenarios
+
+- [Freelancer with multiple clients](https://gitswitch.dev/docs/scenarios/freelancer)
+- [Open source contributor](https://gitswitch.dev/docs/scenarios/oss)
+- [Multiple GitHub accounts](https://gitswitch.dev/docs/scenarios/multi-github)
+
+## Source
+
+- [GitHub repository](https://github.com/aksisonline/gitswitch)
+- License: MIT

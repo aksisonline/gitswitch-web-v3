@@ -23,6 +23,7 @@ export const Route = createFileRoute('/privacy')({
           'gitswitch runs entirely on your machine. No servers, no analytics, no telemetry.',
       },
     ],
+    links: [{ rel: 'canonical', href: 'https://gitswitch.dev/privacy' }],
   }),
   component: Privacy,
 })

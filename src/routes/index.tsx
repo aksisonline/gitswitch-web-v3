@@ -5,7 +5,12 @@ import InstallTabs from '../components/InstallTabs'
 import InstallList from '../components/InstallList'
 import { VERSION } from '../generated/meta'
 
-export const Route = createFileRoute('/')({ component: Home })
+export const Route = createFileRoute('/')({
+  head: () => ({
+    links: [{ rel: 'canonical', href: 'https://gitswitch.dev' }],
+  }),
+  component: Home,
+})
 
 const LOGO = String.raw`  ___  _  _      ___        _  _      _
  / __|(_)| |_   / __| __ __ __(_)| |_  __ | |_
