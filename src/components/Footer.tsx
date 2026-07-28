@@ -20,6 +20,19 @@ export default function Footer() {
               Abhiram Kanna
             </a>
           </p>
+          <a
+            href="https://nicklaunches.com/products/gitswitch/?utm_source=gitswitch.dev&utm_medium=badge&utm_campaign=featured"
+            target="_blank"
+            rel="noopener"
+            className="footer-badge"
+          >
+            <img
+              src="https://nicklaunches.com/badges/featured-dark.png"
+              alt="gitswitch on Nick Launches"
+              width={244}
+              height={56}
+            />
+          </a>
         </div>
         <div className="footer-links">
           <div>

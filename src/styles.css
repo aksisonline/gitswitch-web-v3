@@ -1081,6 +1081,15 @@ kbd {
   font-size: 0.72rem;
   color: var(--muted);
 }
+.footer-badge {
+  display: inline-block;
+  margin-top: 0.85rem;
+}
+.footer-badge img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
 .footer-links {
   display: grid;
   grid-template-columns: 1fr 1fr;
