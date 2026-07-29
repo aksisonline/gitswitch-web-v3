@@ -112,15 +112,6 @@ async function main() {
   }
   console.log(`[sync] wrote ${slugList.length} MDX files to content/docs/`)
 
-  // Privacy policy — exposed via a static file for the privacy route.
-  const privacyPath = join(docsDir, '..', 'privacy-policy.md')
-  if (existsSync(privacyPath)) {
-    const privacyOut = join(ROOT, 'src', 'generated', 'privacy.md')
-    mkdirSync(dirname(privacyOut), { recursive: true })
-    writeFileSync(privacyOut, readFileSync(privacyPath, 'utf8'))
-    console.log('[sync] copied privacy-policy.md')
-  }
-
   const version = await fetchVersion()
 
   // Sidebar ordering for use on landing page + docs nav via fumadocs.

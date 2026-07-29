@@ -15,7 +15,7 @@ export default function Footer() {
             GitHub account — instantly.
           </p>
           <p className="footer-meta">
-            <span>{VERSION}</span> · MIT · made by{' '}
+            <span>{VERSION}</span> · Apache-2.0 · made by{' '}
             <a href="https://abhiramkanna.com" target="_blank" rel="noreferrer">
               Abhiram Kanna
             </a>
