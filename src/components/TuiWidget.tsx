@@ -50,7 +50,7 @@ function renderTabBar(s: State, t: Theme) {
   const tabs = ['Accounts', 'Utilities', 'Settings']
   const parts = tabs.map(
     (label, i) =>
-      `<span data-tab="${i}" style="cursor:pointer;${
+      `<span data-tab="${i}" onmousedown="event.preventDefault()" onmouseup="if(event.button===0){window.__tuiDispatch({type:'tab', tab:${i}})}" style="cursor:pointer;${
         i === s.tab
           ? `background:${t.accent};color:${t.bg};font-weight:700;`
           : `color:${t.muted};`
@@ -85,7 +85,7 @@ function renderAccounts(s: State, t: Theme) {
           ? ` <span style="color:${t.check}">●</span>`
           : ` <span style="color:${t.muted}" title="Session Isolation is off">●</span>`
       }
-      return `  <div data-row="${i}" style="cursor:pointer;${bold}">${pointer} ${mark} <span style="color:${nameC}">${pad(
+      return `  <div data-row="${i}" onmousedown="event.preventDefault()" onmouseup="if(event.button===0){window.__tuiDispatch({type:'switch-idx', value:${i}})}" style="cursor:pointer;${bold}">${pointer} ${mark} <span style="color:${nameC}">${pad(
         p.nick,
         14,
       )}</span>${pin} <span style="color:${t.muted}">${p.email}</span></div>`
@@ -143,7 +143,7 @@ function renderUtilities(s: State, t: Theme) {
         ? `<span style="color:${t.check}">●  on</span>`
         : `<span style="color:${t.muted}">○  off</span>`
       const titleC = focused ? t.accent : t.text
-      return `<div data-util="${i}" style="cursor:pointer;border:1px solid ${border};padding:.5rem .7rem;margin-bottom:.5rem">
+      return `<div data-util="${i}" onmousedown="event.preventDefault()" onmouseup="if(event.button===0){window.__tuiDispatch({type:'util-click', value:${i}})}" style="cursor:pointer;border:1px solid ${border};padding:.5rem .7rem;margin-bottom:.5rem">
   <div style="display:flex;justify-content:space-between;color:${titleC};font-weight:${
     focused ? 700 : 400
   }">${item.title}<span>${toggle}</span></div>
@@ -165,13 +165,13 @@ function renderSettings(s: State, t: Theme, themeIdx: number) {
   const titleC = (i: number) => (s.settingsFocus === i ? t.accent : t.text)
   return `
 ${renderHeader(t)}${renderTabBar(s, t)}
-<div data-settings="0" style="cursor:pointer;border:1px solid ${border(0)};padding:.5rem .7rem;margin-bottom:.5rem">
+<div data-settings="0" onmousedown="event.preventDefault()" onmouseup="if(event.button===0){window.__tuiDispatch({type:'settings-focus', value:0})}" style="cursor:pointer;border:1px solid ${border(0)};padding:.5rem .7rem;margin-bottom:.5rem">
   <div style="display:flex;justify-content:space-between;color:${titleC(0)};font-weight:${
     s.settingsFocus === 0 ? 700 : 400
   }">Config Location<span style="color:${t.accent}">[✎ edit]</span></div>
   <div style="color:${t.muted};font-size:.72rem;margin-top:.15rem">~/.config/gitswitch/config.yaml</div>
 </div>
-<div data-settings="1" style="cursor:pointer;border:1px solid ${border(1)};padding:.5rem .7rem;margin-bottom:.5rem">
+<div data-settings="1" onmousedown="event.preventDefault()" onmouseup="if(event.button===0){window.__tuiDispatch({type:'settings-focus', value:1});window.__tuiCycle()}" style="cursor:pointer;border:1px solid ${border(1)};padding:.5rem .7rem;margin-bottom:.5rem">
   <div style="display:flex;justify-content:space-between;color:${titleC(1)};font-weight:${
     s.settingsFocus === 1 ? 700 : 400
   }">Theme<span>← →</span></div>
@@ -179,7 +179,7 @@ ${renderHeader(t)}${renderTabBar(s, t)}
     themeIdx + 1
   }/${THEMES.length})</div>
 </div>
-<div data-settings="2" style="cursor:pointer;border:1px solid ${border(2)};padding:.5rem .7rem;margin-bottom:.5rem">
+<div data-settings="2" onmousedown="event.preventDefault()" onmouseup="if(event.button===0){window.__tuiDispatch({type:'settings-focus', value:2})}" style="cursor:pointer;border:1px solid ${border(2)};padding:.5rem .7rem;margin-bottom:.5rem">
   <div style="display:flex;justify-content:space-between;color:${titleC(2)};font-weight:${
     s.settingsFocus === 2 ? 700 : 400
   }">Shell Alias<span style="color:${t.accent}">[✎ rename]</span></div>
@@ -452,6 +452,14 @@ export default function TuiWidget() {
     return () => window.removeEventListener('keydown', onKey)
   }, [onKey])
 
+  // ponytail: rendered rows are raw HTML (dangerouslySetInnerHTML), so their
+  // onmouseup="" attributes call back through these globals instead of React
+  // props. Single hero instance per page — revisit if that ever changes.
+  useEffect(() => {
+    ;(window as unknown as { __tuiDispatch: typeof dispatch }).__tuiDispatch = dispatch
+    ;(window as unknown as { __tuiCycle: typeof cycle }).__tuiCycle = cycle
+  }, [dispatch, cycle])
+
   // Mouse: hover moves focus only (mirrors the real TUI's mouse-motion handling);
   // click performs the action, matching handleMouse in internal/tui/update.go.
   const onBodyOver = useCallback(
@@ -476,36 +484,15 @@ export default function TuiWidget() {
     [state.mode],
   )
 
-  const onBodyClick = useCallback(
-    (e: React.MouseEvent<HTMLDivElement>) => {
-      winRef.current?.focus()
-      if (state.mode !== 'list') return
-      const el = e.target as HTMLElement
-      const tabEl = el.closest<HTMLElement>('[data-tab]')
-      if (tabEl) {
-        dispatch({ type: 'tab', tab: Number(tabEl.dataset.tab) })
-        return
-      }
-      const row = el.closest<HTMLElement>('[data-row]')
-      if (row) {
-        dispatch({ type: 'switch-idx', value: Number(row.dataset.row) })
-        return
-      }
-      const util = el.closest<HTMLElement>('[data-util]')
-      if (util) {
-        dispatch({ type: 'util-click', value: Number(util.dataset.util) })
-        return
-      }
-      const settingsEl = el.closest<HTMLElement>('[data-settings]')
-      if (settingsEl) {
-        const i = Number(settingsEl.dataset.settings)
-        dispatch({ type: 'settings-focus', value: i })
-        // Click on the Theme box does what arrow-right does: cycle forward.
-        if (i === 1) cycle()
-      }
-    },
-    [state.mode, cycle],
-  )
+  // Actions dispatch via inline onmouseup="" on the generated rows/tabs
+  // themselves (see the useEffect above) — mouseup, not click: Chromium/WebKit
+  // can silently drop the synthetic click after a mousedown+move over text,
+  // even with user-select:none, because it still treats the gesture as a
+  // selection drag. mouseup always fires. This just keeps the window focused
+  // so keyboard nav keeps working after a mouse click.
+  const onBodyMouseUp = useCallback(() => {
+    winRef.current?.focus()
+  }, [])
 
   let html = ''
   if (state.mode === 'help') html = renderHelp(t)
@@ -535,7 +522,7 @@ export default function TuiWidget() {
           className="tui-body"
           onMouseOver={onBodyOver}
           onMouseDown={(e) => e.preventDefault()}
-          onClick={onBodyClick}
+          onMouseUp={onBodyMouseUp}
           dangerouslySetInnerHTML={{ __html: html }}
         />
       </div>
