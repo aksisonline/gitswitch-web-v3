@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Static: there is one sitemap and TanStack Start regenerates it in place on
+     every build, so the index never needs to change. <lastmod> is omitted
+     deliberately — it is optional here, and hardcoding one would go stale. -->
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <sitemap>
+    <loc>https://gitswitch.dev/sitemap.xml</loc>
+  </sitemap>
+</sitemapindex>
