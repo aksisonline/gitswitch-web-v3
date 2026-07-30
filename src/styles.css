@@ -817,49 +817,6 @@ kbd {
 }
 
 /* ────────────────────────────────────────────────────────────
-   Stats
-   ──────────────────────────────────────────────────────────── */
-.stats-bar {
-  border-bottom: 1px solid var(--border);
-  padding-block: 1.5rem;
-  padding-inline: clamp(1.25rem, 4vw, 3rem);
-  max-width: 1080px;
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-}
-.stat {
-  border-left: 1px solid var(--border);
-  padding-left: 1.5rem;
-}
-.stat:first-child {
-  border-left: none;
-  padding-left: 0;
-}
-.stat-num {
-  font-size: 1.6rem;
-  font-weight: 700;
-  color: var(--accent);
-}
-.stat-num::before {
-  content: '[';
-  color: var(--muted);
-  margin-right: 4px;
-  font-weight: 400;
-}
-.stat-num::after {
-  content: ']';
-  color: var(--muted);
-  margin-left: 4px;
-  font-weight: 400;
-}
-.stat-label {
-  font-size: 0.72rem;
-  color: var(--muted);
-  margin-top: 0.25rem;
-}
-
-/* ────────────────────────────────────────────────────────────
    Features
    ──────────────────────────────────────────────────────────── */
 .features-grid {
@@ -1157,10 +1114,6 @@ kbd {
   .roadmap-grid {
     grid-template-columns: 1fr;
   }
-  .stats-bar {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 1.25rem 0;
-  }
   .footer-inner {
     grid-template-columns: 1fr;
   }
@@ -1209,7 +1162,6 @@ main,
 /* Accent glow — gives text/borders the phosphor bloom of a CRT. */
 .section-title em,
 .hero h1 em,
-.stat-num,
 .nav-brand .star,
 .footer-brand .star,
 .hero-badge {
@@ -1245,18 +1197,6 @@ main,
   text-transform: uppercase;
   letter-spacing: 0.1em;
   font-weight: 600;
-}
-
-/* ── Stat bar → arcade high-score row ── */
-.stat-num {
-  font-variant-numeric: tabular-nums;
-}
-.stats-bar {
-  background: linear-gradient(
-    180deg,
-    color-mix(in srgb, var(--accent) 5%, transparent),
-    transparent
-  );
 }
 
 /* ── Feature card hover: scanline sweep + accent edge ── */

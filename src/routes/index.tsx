@@ -65,7 +65,7 @@ function Home() {
           </h1>
           <p className="hero-sub">
             <span className="comment"># No more committing with the wrong account.</span>
-            <br />Work with multiple GitHub accounts at the same time, in parallel.
+            <br />Work with multiple GitHub accounts at the same time, in parallel. For both devs and agents.
           </p>
           <div className="hero-actions">
             <a href="#install" className="btn-primary">
@@ -84,21 +84,6 @@ function Home() {
         </div>
         <TuiWidget />
       </section>
-
-      {/* Stats */}
-      <div className="stats-bar">
-        {[
-          ['11', 'color themes'],
-          ['∞', 'git profiles'],
-          ['5', 'fields per profile'],
-          ['Apache-2.0', 'open source'],
-        ].map(([n, l]) => (
-          <div className="stat" key={l}>
-            <div className="stat-num">{n}</div>
-            <div className="stat-label">{l}</div>
-          </div>
-        ))}
-      </div>
 
       {/* Features */}
       <section id="features" className="section">
