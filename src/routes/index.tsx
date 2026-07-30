@@ -21,9 +21,9 @@ const FEATURES: Array<[string, ReactNode]> = [
   ['one-login setup', <><code>gitswitch login</code> — GitHub device flow creates your profile automatically: name, email, GitHub account, token. No manual config.</>],
   ['commit identity switching', <>Instantly change <code>user.name</code> and <code>user.email</code> in your global git config. No more wrong-email commits.</>],
   ['ssh key management', <>Sets <code>core.sshCommand</code> to force a specific key with <code>IdentitiesOnly=yes</code>, preventing agent fallback.</>],
-  ['gpg signing', <>Per-profile GPG signing key. Switch and your verified-commit badge follows the right identity automatically.</>],
+  ['gpg signing', <>Per-profile GPG — or SSH — signing key. Switch and your verified-commit badge follows the right identity automatically.</>],
   ['github account sync', <>Keeps <code>gh</code> CLI auth in lockstep with your git identity — one switch, both updated.</>],
-  ['gh cli isolation', <>Two terminals, two GitHub accounts, no fighting. Every <code>gh</code> command resolves the right account for its repo on its own — <code>gh</code>'s single shared global account is never touched.</>],
+  ['session isolation', <>Two terminals, two GitHub accounts, no fighting. Every <code>gh</code> command resolves the right account for its repo on its own, and repo pins actually stick — on by default for new installs.</>],
   ['mouse-driven tui', <>Click, hover, and scroll through profiles, settings, and the setup wizard — not just arrow keys and enter.</>],
   ['ai coding agent setup', <><code>gitswitch claude</code> installs a Claude Code skill; <code>gitswitch reauthor</code> fixes commits an agent already made under the wrong identity.</>],
   ['identity awareness', <>Shell hook learns which identity you use per repo and suggests the right one when you <code>cd</code> in.</>],
@@ -36,7 +36,7 @@ const COMPARE: Array<[string, string, string]> = [
   ['ssh key per identity', '✗', '✓'],
   ['gpg signing key', '✗', '✓'],
   ['per-repo auto-switch', '✗', '✓'],
-  ['parallel gh accounts (multi-terminal)', '✗ (one global account)', '✓ (gh cli isolation)'],
+  ['parallel gh accounts (multi-terminal)', '✗ (one global account)', '✓ (session isolation)'],
   ['interactive TUI (mouse + keyboard)', '✗', '✓'],
   ['no runtime deps', '✗', '✓ (single binary)'],
 ]
@@ -171,7 +171,9 @@ function Home() {
           <div className="tui-frame">
             <div className="frame-title">shipped · stable + canary</div>
             <div className="frame-body">
-              <p><strong>gh CLI isolation</strong> (canary) — a <code>gh</code> shell wrapper resolves the right GitHub account per repo on every call, so multiple terminals can work as different accounts in parallel without fighting over <code>gh</code>'s single global active account.</p>
+              <p><strong>Session isolation</strong> (canary) — a <code>gh</code> shell wrapper resolves the right GitHub account per repo on every call, so multiple terminals can work as different accounts in parallel without fighting over <code>gh</code>'s single global active account. Now also gates repo pins and ships on by default for new installs.</p>
+              <p><strong>SSH commit signing</strong> (canary) — sign commits with an SSH key instead of GPG; <code>--sign-key</code> takes either.</p>
+              <p><strong>Scriptable CLI</strong> (canary) — <code>--json</code> on <code>current</code>/<code>list</code>/<code>doctor</code>, colorized output, and grouped <code>--help</code> for scripts and agents.</p>
               <p><strong>HTTPS credential helper</strong> — keychain-backed PAT routing so HTTPS clones and pushes just work alongside SSH.</p>
               <p><strong>GitHub OAuth login</strong> — <code>gitswitch login</code> authenticates via device flow, creates your profile automatically. No manual config.</p>
               <p><strong>Mouse support + TUI refresh</strong> — full mouse interaction, alias management, shell settings, and release notes built into the TUI.</p>
@@ -183,8 +185,8 @@ function Home() {
             <div className="frame-title">coming up</div>
             <div className="frame-body">
               <p><strong>Multi-host profiles</strong> — one profile, multiple GitHub hosts (github.com + github.corp.com), each with its own key and token.</p>
-              <p><strong>Session isolation</strong> — <code>gitswitch shell</code> gives each terminal its own identity via env vars. Parallel work, zero collisions.</p>
-              <p><strong>Doctor + diagnostics</strong> — per-repo identity health check with <code>--fix</code> for auto-repair and <code>--json</code> for agent use.</p>
+              <p><strong><code>gitswitch shell</code></strong> — a dedicated command to set a terminal-only identity via env vars, on top of the global/pinned scopes that already exist.</p>
+              <p><strong>Doctor auto-repair</strong> — <code>gitswitch doctor --fix</code> to fix what it finds, not just report it.</p>
             </div>
           </div>
           <div className="tui-frame">
