@@ -1152,7 +1152,9 @@ body::before {
     transparent 60%
   );
 }
-.navbar,
+/* Lift content above body::before. .navbar is excluded on purpose — it is
+   sticky (z-index 50) and listing it here would reset it to relative, which
+   unpins it and leaves a 52px gap above the sticky docs sidebar. */
 main,
 .site-footer {
   position: relative;
