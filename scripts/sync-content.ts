@@ -8,8 +8,9 @@
  * In CI we sparse-clone just docs/public from GitHub.
  *
  * Outputs:
- *   content/docs/**  ← .mdx files for Fumadocs MDX to process (links rewritten)
- *   src/generated/meta.ts  ← VERSION + SIDEBAR for the landing page
+ *   content/docs/**       ← .mdx files for Fumadocs MDX to process (links rewritten)
+ *   content/version.json  ← committed cache of the resolved version (see resolveVersion)
+ *   src/generated/meta.ts ← VERSION + SIDEBAR for the landing page
  */
 import { execSync } from 'node:child_process'
 import {
@@ -31,6 +32,7 @@ const ROOT = join(import.meta.dir, '..')
 const SIBLING = join(ROOT, '..', 'git-switcher', 'docs', 'public')
 const TMP = join(ROOT, '.docs-cache')
 const CONTENT_OUT = join(ROOT, 'content', 'docs')
+const VERSION_OUT = join(ROOT, 'content', 'version.json')
 const META_OUT = join(ROOT, 'src', 'generated', 'meta.ts')
 
 type DocMeta = { groups: Array<{ label: string; items: Array<string> }> }
@@ -50,18 +52,42 @@ function resolveDocsDir(): string {
   return join(TMP, 'docs', 'public')
 }
 
-async function fetchVersion(): Promise<string> {
+async function fetchLatestReleaseTag(): Promise<string> {
+  const headers: Record<string, string> = { 'User-Agent': 'gitswitch-web-build' }
+  if (process.env.GITHUB_TOKEN) headers.Authorization = `Bearer ${process.env.GITHUB_TOKEN}`
+  const res = await fetch(`https://api.github.com/repos/${REPO}/releases/latest`, { headers })
+  if (!res.ok) throw new Error(`HTTP ${res.status}`)
+  const data = (await res.json()) as { tag_name?: string }
+  if (!data.tag_name) throw new Error('no tag_name')
+  return data.tag_name
+}
+
+// Cloudflare's build environment shares IPs across many customers' builds, so
+// unauthenticated GitHub API calls there hit rate limits constantly and fall
+// back to FALLBACK_VERSION — which is how production silently ran stale for a
+// long time. Resolve in order of trust instead of always hitting the API:
+//   1. RELEASE_VERSION env — set by the CI workflow from the release dispatch
+//      payload, so it's exact and needs no network call.
+//   2. content/version.json — committed by that same CI run, so a normal
+//      build (including Cloudflare's) just reads it, no network involved.
+//   3. Live API fetch — only for a first-ever run with neither of the above
+//      (e.g. a fresh clone before any release has synced yet).
+// Whatever is resolved gets written back to content/version.json so the next
+// build in any environment can skip straight to step 2.
+async function resolveVersion(): Promise<string> {
+  if (process.env.RELEASE_VERSION) {
+    console.log(`[sync] using RELEASE_VERSION env: ${process.env.RELEASE_VERSION}`)
+    return process.env.RELEASE_VERSION
+  }
+  if (existsSync(VERSION_OUT)) {
+    const { version } = JSON.parse(readFileSync(VERSION_OUT, 'utf8')) as { version: string }
+    console.log(`[sync] using committed content/version.json: ${version}`)
+    return version
+  }
   try {
-    const headers: Record<string, string> = { 'User-Agent': 'gitswitch-web-build' }
-    if (process.env.GITHUB_TOKEN) headers.Authorization = `Bearer ${process.env.GITHUB_TOKEN}`
-    const res = await fetch(`https://api.github.com/repos/${REPO}/releases/latest`, { headers })
-    if (!res.ok) throw new Error(`HTTP ${res.status}`)
-    const data = (await res.json()) as { tag_name?: string }
-    if (data.tag_name) {
-      console.log(`[sync] latest release: ${data.tag_name}`)
-      return data.tag_name
-    }
-    throw new Error('no tag_name')
+    const tag = await fetchLatestReleaseTag()
+    console.log(`[sync] fetched latest release: ${tag}`)
+    return tag
   } catch (err) {
     console.warn(`[sync] version fetch failed (${String(err)}), using ${FALLBACK_VERSION}`)
     return FALLBACK_VERSION
@@ -112,7 +138,8 @@ async function main() {
   }
   console.log(`[sync] wrote ${slugList.length} MDX files to content/docs/`)
 
-  const version = await fetchVersion()
+  const version = await resolveVersion()
+  writeFileSync(VERSION_OUT, JSON.stringify({ version }) + '\n')
 
   // Sidebar ordering for use on landing page + docs nav via fumadocs.
   const sidebar = meta.groups.map((g) => ({
