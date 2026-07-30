@@ -341,13 +341,21 @@ export default function TuiWidget() {
   const { idx, cycle, setIdx } = useTheme()
   const t = THEMES[idx]
   const [state, dispatch] = useReducer(reducer, INITIAL)
-  const [focused, setFocused] = useState(false)
+  // Focus follows the mouse, not clicks — hovering the widget is "in focus"
+  // (fixes the double-click-to-interact issue), tabbing in still works too.
+  const [hovered, setHovered] = useState(false)
+  const [domFocused, setDomFocused] = useState(false)
+  const focused = hovered || domFocused
+  const hoveredRef = useRef(false)
+  useEffect(() => {
+    hoveredRef.current = hovered
+  }, [hovered])
   const winRef = useRef<HTMLDivElement>(null)
 
   const onKey = useCallback(
     (e: KeyboardEvent) => {
       const win = winRef.current
-      if (!win || document.activeElement !== win) return
+      if (!win || (!hoveredRef.current && document.activeElement !== win)) return
       if (e.ctrlKey || e.metaKey || e.altKey) return
 
       if (state.mode === 'add') {
@@ -488,11 +496,7 @@ export default function TuiWidget() {
   // themselves (see the useEffect above) — mouseup, not click: Chromium/WebKit
   // can silently drop the synthetic click after a mousedown+move over text,
   // even with user-select:none, because it still treats the gesture as a
-  // selection drag. mouseup always fires. This just keeps the window focused
-  // so keyboard nav keeps working after a mouse click.
-  const onBodyMouseUp = useCallback(() => {
-    winRef.current?.focus()
-  }, [])
+  // selection drag, and mouseup always fires regardless.
 
   let html = ''
   if (state.mode === 'help') html = renderHelp(t)
@@ -508,9 +512,10 @@ export default function TuiWidget() {
         id="tui"
         ref={winRef}
         tabIndex={0}
-        onClick={() => winRef.current?.focus()}
-        onFocus={() => setFocused(true)}
-        onBlur={() => setFocused(false)}
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
+        onFocus={() => setDomFocused(true)}
+        onBlur={() => setDomFocused(false)}
       >
         <div className="tui-titlebar">
           <span className="tui-dot red" />
@@ -522,14 +527,13 @@ export default function TuiWidget() {
           className="tui-body"
           onMouseOver={onBodyOver}
           onMouseDown={(e) => e.preventDefault()}
-          onMouseUp={onBodyMouseUp}
           dangerouslySetInnerHTML={{ __html: html }}
         />
       </div>
       <div className={`tui-hint${focused ? ' tui-hint--active' : ''}`}>
         {focused
           ? <>active · <kbd>1-3</kbd> tabs · <kbd>↑↓</kbd> nav · <kbd>↵</kbd> switch/toggle · click anything · <kbd>esc</kbd> exit</>
-          : <>click or tab to interact · try <kbd>1-3</kbd> <kbd>↑↓</kbd> <kbd>↵</kbd></>
+          : <>hover or tab to interact · try <kbd>1-3</kbd> <kbd>↑↓</kbd> <kbd>↵</kbd></>
         }
       </div>
     </div>
