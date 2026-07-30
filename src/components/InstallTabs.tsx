@@ -8,7 +8,11 @@ const TABS: Array<{ id: string; label: string; cmd: string }> = [
     label: 'curl',
     cmd: 'curl -fsSL https://raw.githubusercontent.com/aksisonline/gitswitch/main/.github/install.sh | bash',
   },
-  { id: 'go', label: 'go install', cmd: 'go install github.com/aksisonline/gitswitch@latest' },
+  {
+    id: 'windows',
+    label: 'Windows',
+    cmd: 'irm https://raw.githubusercontent.com/aksisonline/gitswitch/main/.github/install.ps1 | iex',
+  },
 ]
 
 export default function InstallTabs() {

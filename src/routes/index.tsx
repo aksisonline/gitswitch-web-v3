@@ -173,7 +173,6 @@ function Home() {
             <div className="frame-body">
               <p><strong>Session isolation</strong> (canary) — a <code>gh</code> shell wrapper resolves the right GitHub account per repo on every call, so multiple terminals can work as different accounts in parallel without fighting over <code>gh</code>'s single global active account. Now also gates repo pins and ships on by default for new installs.</p>
               <p><strong>SSH commit signing</strong> (canary) — sign commits with an SSH key instead of GPG; <code>--sign-key</code> takes either.</p>
-              <p><strong>Scriptable CLI</strong> (canary) — <code>--json</code> on <code>current</code>/<code>list</code>/<code>doctor</code>, colorized output, and grouped <code>--help</code> for scripts and agents.</p>
               <p><strong>HTTPS credential helper</strong> — keychain-backed PAT routing so HTTPS clones and pushes just work alongside SSH.</p>
               <p><strong>GitHub OAuth login</strong> — <code>gitswitch login</code> authenticates via device flow, creates your profile automatically. No manual config.</p>
               <p><strong>Mouse support + TUI refresh</strong> — full mouse interaction, alias management, shell settings, and release notes built into the TUI.</p>
@@ -185,8 +184,6 @@ function Home() {
             <div className="frame-title">coming up</div>
             <div className="frame-body">
               <p><strong>Multi-host profiles</strong> — one profile, multiple GitHub hosts (github.com + github.corp.com), each with its own key and token.</p>
-              <p><strong><code>gitswitch shell</code></strong> — a dedicated command to set a terminal-only identity via env vars, on top of the global/pinned scopes that already exist.</p>
-              <p><strong>Doctor auto-repair</strong> — <code>gitswitch doctor --fix</code> to fix what it finds, not just report it.</p>
             </div>
           </div>
           <div className="tui-frame">
