@@ -10,7 +10,9 @@ import appCss from '#/styles.css?url'
 
 const TITLE = 'gitswitch — Run Multiple GitHub Accounts in Parallel'
 const DESC =
-  'The only tool that lets you run multiple GitHub accounts in parallel on the same machine — one identity per terminal, zero config fights. Also handles SSH keys and GPG signing.'
+  'Run multiple GitHub accounts in parallel on one machine — for developers and AI coding agents alike. One command handles identity, SSH keys, and GPG signing.'
+const OG_IMAGE_ALT =
+  'gitswitch terminal UI in the Dracula theme, showing the profile list next to the "git identity manager. done right." hero headline'
 
 const softwareSchema = {
   '@context': 'https://schema.org',
@@ -48,10 +50,12 @@ export const Route = createRootRoute({
       { property: 'og:image:width', content: '1200' },
       { property: 'og:image:height', content: '630' },
       { property: 'og:image:type', content: 'image/png' },
+      { property: 'og:image:alt', content: OG_IMAGE_ALT },
       { name: 'twitter:card', content: 'summary_large_image' },
       { name: 'twitter:title', content: TITLE },
       { name: 'twitter:description', content: DESC },
       { name: 'twitter:image', content: 'https://gitswitch.dev/og-image.png' },
+      { name: 'twitter:image:alt', content: OG_IMAGE_ALT },
     ],
     links: [
       { rel: 'stylesheet', href: appCss },

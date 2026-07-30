@@ -1,6 +1,8 @@
 # gitswitch
 
-> gitswitch is a terminal tool that switches your git identity — name, email, SSH key, GPG signing key, and GitHub account — all at once with one command. It solves what `gh auth switch` doesn't: commit authorship, not just API tokens.
+> gitswitch is the only tool that lets you run multiple GitHub accounts in parallel, on the same machine — one identity per terminal, no shared global account to fight over. It also switches your full git identity — name, email, SSH key, GPG signing key, and GitHub account — all at once with one command. It solves what `gh auth switch` doesn't: commit authorship and per-terminal account isolation, not just API tokens.
+
+Built for both human developers and AI coding agents. Agents running in parallel terminals/sandboxes each get the correct identity automatically instead of fighting over one shared account, and `gitswitch reauthor` fixes commits an agent already made under the wrong identity — no manual rebase needed. A built-in Claude Code skill (`gitswitch claude`) lets Claude detect identity mismatches and call gitswitch itself.
 
 Written in Go, single binary, no runtime dependencies. Runs entirely on the user's machine — no servers, no telemetry.
 
@@ -16,7 +18,8 @@ Written in Go, single binary, no runtime dependencies. Runs entirely on the user
 - [SSH key management](https://gitswitch.dev/docs/features/ssh-keys): forces a specific key per profile via `core.sshCommand`
 - [GPG signing](https://gitswitch.dev/docs/features/gpg): per-profile signing key for verified commits
 - [GitHub account sync](https://gitswitch.dev/docs/features/github-sync): keeps `gh` CLI auth in lockstep with the active identity
-- [Identity awareness](https://gitswitch.dev/docs/features/identity-awareness): shell hook that recommends the right identity per repo
+- [Session Isolation](https://gitswitch.dev/docs/features/session-isolation): each terminal resolves its own `gh` account, so multiple GitHub accounts run in parallel on one machine without fighting over `gh`'s single global active account. On by default for new installs.
+- [Identity awareness](https://gitswitch.dev/docs/features/identity-awareness): shell hook that recommends the right identity per repo, and repo pins that write straight into that repo's local git config
 - [Shell integration](https://gitswitch.dev/docs/features/shell): `gitswitch install` wires up prompt segment, nudge hook, and tab completion
 
 ## How gitswitch compares
