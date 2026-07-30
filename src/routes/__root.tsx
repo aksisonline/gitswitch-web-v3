@@ -8,9 +8,9 @@ import { THEME_INIT_SCRIPT } from '#/lib/themes'
 import { RootProvider } from 'fumadocs-ui/provider/tanstack'
 import appCss from '#/styles.css?url'
 
-const TITLE = 'gitswitch — Git Account Switcher & Identity Manager'
+const TITLE = 'gitswitch — Run Multiple GitHub Accounts in Parallel'
 const DESC =
-  'The easy way to set up git and GitHub: one command handles identity, SSH keys, and GPG signing. Includes a built-in Claude Code skill for AI coding agents.'
+  'The only tool that lets you run multiple GitHub accounts in parallel on the same machine — one identity per terminal, zero config fights. Also handles SSH keys and GPG signing.'
 
 const softwareSchema = {
   '@context': 'https://schema.org',
@@ -35,7 +35,7 @@ export const Route = createRootRoute({
       {
         name: 'keywords',
         content:
-          'git account switcher, gitswitch, git config easy switching, git identity manager, multiple git accounts, switch git user, git ssh key management, git profile switcher, git commit identity, github account switcher, git gpg signing, easy git setup, easy github setup, git setup for developers, claude code git skill, git setup for ai coding agents',
+          'multiple github accounts, github accounts in parallel, parallel github accounts same machine, session isolation gh cli, gh cli multiple accounts, git account switcher, gitswitch, git config easy switching, git identity manager, multiple git accounts, switch git user, git ssh key management, git profile switcher, git commit identity, github account switcher, git gpg signing, claude code git skill, git setup for ai coding agents',
       },
       { name: 'author', content: 'Abhiram Kanna' },
       { name: 'robots', content: 'index, follow, max-image-preview:large, max-snippet:-1' },

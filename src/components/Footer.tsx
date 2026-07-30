@@ -11,8 +11,8 @@ export default function Footer() {
             <span className="prompt">$</span> gitswitch <span className="star">✦</span>
           </div>
           <p className="footer-tag">
-            Git identity manager. Switch name, email, SSH key, GPG signing, and
-            GitHub account — instantly.
+            Run multiple GitHub accounts in parallel on the same machine — plus name,
+            email, SSH key, and GPG signing, switched instantly.
           </p>
           <p className="footer-meta">
             <span>{VERSION}</span> · Apache-2.0 · made by{' '}

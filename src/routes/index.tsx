@@ -23,11 +23,12 @@ const FEATURES: Array<[string, ReactNode]> = [
   ['ssh key management', <>Sets <code>core.sshCommand</code> to force a specific key with <code>IdentitiesOnly=yes</code>, preventing agent fallback.</>],
   ['gpg signing', <>Per-profile GPG — or SSH — signing key. Switch and your verified-commit badge follows the right identity automatically.</>],
   ['github account sync', <>Keeps <code>gh</code> CLI auth in lockstep with your git identity — one switch, both updated.</>],
-  ['session isolation', <>Two terminals, two GitHub accounts, no fighting. Every <code>gh</code> command resolves the right account for its repo on its own, and repo pins actually stick — on by default for new installs.</>],
+  ['session isolation', <>Two terminals, two GitHub accounts, no fighting. Every <code>gh</code> command resolves the right account for its repo on its own — on by default for new installs.</>],
   ['mouse-driven tui', <>Click, hover, and scroll through profiles, settings, and the setup wizard — not just arrow keys and enter.</>],
   ['ai coding agent setup', <><code>gitswitch claude</code> installs a Claude Code skill; <code>gitswitch reauthor</code> fixes commits an agent already made under the wrong identity.</>],
   ['identity awareness', <>Shell hook learns which identity you use per repo and suggests the right one when you <code>cd</code> in.</>],
   ['shell integration', <>One <code>gitswitch install</code> wires up your shell. Pin a profile to a repo and it just works.</>],
+  ['identity at a glance', <>Prompt and TUI mark whether you're on your global identity, a repo pin, or a session override — <code>[work]</code> vs <code>[work●]</code> vs <code>[work◆]</code> — so you always know why a commit landed the way it did.</>],
 ]
 
 const COMPARE: Array<[string, string, string]> = [
@@ -56,10 +57,8 @@ function Home() {
             <span className="blink" />
           </h1>
           <p className="hero-sub">
-            <span className="comment"># Switch your name, email, SSH key, and GitHub account</span>
-            <br />
-            <span className="comment"># across profiles — instantly, without touching config files.</span>
-            <br />The one-click way to set up Git and GitHub for developers.
+            <span className="comment"># No more committing with the wrong account.</span>
+            <br />Work with multiple GitHub accounts at the same time, in parallel.
           </p>
           <div className="hero-actions">
             <a href="#install" className="btn-primary">
@@ -169,15 +168,18 @@ function Home() {
         <p className="section-sub">gitswitch is Go all the way. Here's what's shipping.</p>
         <div className="roadmap-grid">
           <div className="tui-frame">
-            <div className="frame-title">shipped · stable + canary</div>
+            <div className="frame-title">shipped · stable</div>
             <div className="frame-body">
-              <p><strong>Session isolation</strong> (canary) — a <code>gh</code> shell wrapper resolves the right GitHub account per repo on every call, so multiple terminals can work as different accounts in parallel without fighting over <code>gh</code>'s single global active account. Now also gates repo pins and ships on by default for new installs.</p>
-              <p><strong>SSH commit signing</strong> (canary) — sign commits with an SSH key instead of GPG; <code>--sign-key</code> takes either.</p>
-              <p><strong>HTTPS credential helper</strong> — keychain-backed PAT routing so HTTPS clones and pushes just work alongside SSH.</p>
+              <p><strong>Session isolation</strong> — a <code>gh</code> shell wrapper resolves the right GitHub account per repo on every call, so multiple terminals can work as different accounts in parallel without fighting over <code>gh</code>'s single global active account. On by default for new installs, and now one feature with repo pins — a pin only takes effect while it's on.</p>
+              <p><strong>Pins write into the repo</strong> — <code>gitswitch pin work</code> writes the identity into that repo's own git config, so it sticks for good without touching your global identity. Your gh account, HTTPS pushes, prompt, and <code>gitswitch current</code> all follow along.</p>
+              <p><strong>SSH commit signing</strong> — sign commits with an SSH key instead of GPG; <code>--sign-key</code> takes either.</p>
+              <p><strong>HTTPS credential helper</strong> — gitswitch registers itself as the first helper git asks for on every host, so HTTPS pushes actually go through the active profile instead of whatever account <code>gh</code> or your keychain had cached.</p>
               <p><strong>GitHub OAuth login</strong> — <code>gitswitch login</code> authenticates via device flow, creates your profile automatically. No manual config.</p>
-              <p><strong>Mouse support + TUI refresh</strong> — full mouse interaction, alias management, shell settings, and release notes built into the TUI.</p>
+              <p><strong>Mouse support + TUI refresh</strong> — every screen is hit-tested against what's actually on screen, not hardcoded row offsets — profiles, utilities, settings, the setup wizard, and arcade mode all respond correctly to hover and click.</p>
+              <p><strong><code>gitswitch reauthor</code></strong> — rewrites author/committer identity on commits already made under the wrong profile, in one command. Built so agents can fix their own attribution mistakes.</p>
               <p><strong>Claude Code skill</strong> — <code>gitswitch claude</code> installs an embedded skill so Claude recognizes identity mismatches and calls gitswitch itself.</p>
-              <p><strong>Beta channel</strong> — <code>gitswitch beta</code> / <code>gitswitch stable</code> to opt in and out of canary builds from the CLI.</p>
+              <p><strong>Scriptable CLI</strong> — <code>gitswitch current --json</code> / <code>gitswitch list --json</code> for scripts; colorized output for humans, off automatically outside a real terminal.</p>
+              <p><strong>Beta channel</strong> — <code>gitswitch beta</code> / <code>gitswitch stable</code> to opt in and out of canary builds from the CLI, with update checks locked to whichever channel you're on.</p>
             </div>
           </div>
           <div className="tui-frame">
