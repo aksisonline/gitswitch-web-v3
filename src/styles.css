@@ -753,6 +753,7 @@ kbd {
   max-width: 480px;
   outline: none;
   overflow: hidden;
+  user-select: none;
   /* No theme transition here — the demo swaps palette instantly so theme
      cycling never animates the terminal. */
 }
