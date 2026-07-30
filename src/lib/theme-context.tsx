@@ -1,6 +1,7 @@
 'use client'
 import { createContext, useCallback, useContext, useEffect, useState } from 'react'
 import {
+  DEFAULT_THEME_IDX,
   STORAGE_KEY,
   THEMES,
   applyTheme,
@@ -18,7 +19,7 @@ type ThemeCtx = {
 const Ctx = createContext<ThemeCtx | null>(null)
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [idx, setIdxState] = useState(0)
+  const [idx, setIdxState] = useState(DEFAULT_THEME_IDX)
 
   const setIdx = useCallback((i: number) => {
     const next = ((i % THEMES.length) + THEMES.length) % THEMES.length

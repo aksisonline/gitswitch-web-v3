@@ -35,6 +35,8 @@ export const THEMES: Array<Theme> = [
 
 export const STORAGE_KEY = 'gitswitch:theme-idx'
 
+export const DEFAULT_THEME_IDX = THEMES.findIndex((t) => t.name === 'Dracula')
+
 export function applyTheme(t: Theme) {
   const r = document.documentElement.style
   r.setProperty('--bg', t.bg)
@@ -79,7 +81,7 @@ export function getStoredThemeIdx(): number {
   } catch {
     /* ignore */
   }
-  return 0
+  return DEFAULT_THEME_IDX
 }
 
 export function setStoredThemeIdx(i: number) {
@@ -96,7 +98,7 @@ export const THEME_INIT_SCRIPT = `(function(){try{
 var T=${JSON.stringify(
   THEMES.map((t) => ({ bg: t.bg, bg2: t.bg2, bg3: t.bg3, border: t.border, muted: t.muted, text: t.text, text2: t.text2, title: t.title, accent: t.accent, cursor: t.cursor, check: t.check, dot: t.dot })),
 )};
-var i=0;try{var v=localStorage.getItem('${STORAGE_KEY}');if(v!==null){var n=parseInt(v,10);if(!isNaN(n)&&n>=0&&n<T.length)i=n}}catch(e){}
+var i=${DEFAULT_THEME_IDX};try{var v=localStorage.getItem('${STORAGE_KEY}');if(v!==null){var n=parseInt(v,10);if(!isNaN(n)&&n>=0&&n<T.length)i=n}}catch(e){}
 var t=T[i];var s=document.documentElement.style;
 for(var k in t){s.setProperty('--'+k,t[k])}
 s.setProperty('--color-fd-background',t.bg);
