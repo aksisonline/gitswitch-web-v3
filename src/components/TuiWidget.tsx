@@ -534,6 +534,7 @@ export default function TuiWidget() {
         <div
           className="tui-body"
           onMouseOver={onBodyOver}
+          onMouseDown={(e) => e.preventDefault()}
           onClick={onBodyClick}
           dangerouslySetInnerHTML={{ __html: html }}
         />
