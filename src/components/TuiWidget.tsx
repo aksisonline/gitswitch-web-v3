@@ -500,15 +500,11 @@ export default function TuiWidget() {
       if (settingsEl) {
         const i = Number(settingsEl.dataset.settings)
         dispatch({ type: 'settings-focus', value: i })
-        if (i === 1) {
-          const rect = settingsEl.getBoundingClientRect()
-          e.clientX - rect.left > rect.width / 2
-            ? cycle()
-            : setIdx((idx - 1 + THEMES.length) % THEMES.length)
-        }
+        // Click on the Theme box does what arrow-right does: cycle forward.
+        if (i === 1) cycle()
       }
     },
-    [state.mode, idx, cycle, setIdx],
+    [state.mode, cycle],
   )
 
   let html = ''
