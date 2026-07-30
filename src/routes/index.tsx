@@ -1,5 +1,5 @@
 import { type ReactNode } from 'react'
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, Link } from '@tanstack/react-router'
 import TuiWidget from '../components/TuiWidget'
 import InstallTabs from '../components/InstallTabs'
 import InstallList from '../components/InstallList'
@@ -29,6 +29,13 @@ const FEATURES: Array<[string, ReactNode]> = [
   ['identity awareness', <>Shell hook learns which identity you use per repo and suggests the right one when you <code>cd</code> in.</>],
   ['shell integration', <>One <code>gitswitch install</code> wires up your shell. Pin a profile to a repo and it just works.</>],
   ['identity at a glance', <>Prompt and TUI mark whether you're on your global identity, a repo pin, or a session override — <code>[work]</code> vs <code>[work●]</code> vs <code>[work◆]</code> — so you always know why a commit landed the way it did.</>],
+]
+
+const ALTERNATIVES: Array<[string, string, ReactNode]> = [
+  ['if', 'already using includeIf?', <>Git's <code>includeIf</code> switches <code>user.name</code>/<code>user.email</code> per directory tree — if you keep repos in a strict folder structure and hand-author each conditional block. <Link to="/docs/$" params={{ _splat: 'features/identity-awareness' }}>Identity awareness</Link> does the same job automatically, per repo instead of per folder, then goes further: SSH keys, GPG/SSH signing, <code>gh</code> account, and session isolation across terminals, switched together.</>],
+  ['ssh', 'already using SSH host aliases?', <>Hand-maintaining <code>~/.ssh/config</code> host aliases and rewriting remotes per account works, but it's manual and per-machine. gitswitch sets <code>core.sshCommand</code> with <code>IdentitiesOnly=yes</code> per profile — same isolation, switched with the rest of your identity in one command.</>],
+  ['cli', 'already using another switcher?', <>Most git account-switcher CLIs stop at commit identity or <code>gh</code> auth. gitswitch adds session isolation (each terminal resolves its own <code>gh</code> account, no shared global state), a mouse-driven TUI, <code>gitswitch reauthor</code> to fix commits already made under the wrong identity, and a Claude Code skill for AI agents.</>],
+  ['gui', 'prefer a GUI or IDE extension?', <>Editor-specific switchers only work inside that one editor. gitswitch is terminal-native — the same behavior in your shell, an editor's integrated terminal, or an AI coding agent's sandbox.</>],
 ]
 
 const COMPARE: Array<[string, string, string]> = [
@@ -149,6 +156,26 @@ function Home() {
               ))}
             </tbody>
           </table>
+        </div>
+      </section>
+
+      {/* Alternatives */}
+      <section className="section">
+        <div className="section-label">already got a setup?</div>
+        <h2 className="section-title">
+          gitswitch <em>plays well</em> with what you have.
+        </h2>
+        <p className="section-sub">
+          You don't have to be starting from zero. Here's how it fits in.
+        </p>
+        <div className="features-grid">
+          {ALTERNATIVES.map(([marker, title, desc]) => (
+            <div className="feature-card" key={title}>
+              <div className="feature-marker">[{marker}]</div>
+              <div className="feature-title">{title}</div>
+              <div className="feature-desc">{desc}</div>
+            </div>
+          ))}
         </div>
       </section>
 

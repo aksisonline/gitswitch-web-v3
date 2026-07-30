@@ -19,6 +19,18 @@ Written in Go, single binary, no runtime dependencies. Runs entirely on the user
 - [Identity awareness](https://gitswitch.dev/docs/features/identity-awareness): shell hook that recommends the right identity per repo
 - [Shell integration](https://gitswitch.dev/docs/features/shell): `gitswitch install` wires up prompt segment, nudge hook, and tab completion
 
+## How gitswitch compares
+
+**vs Git's built-in `includeIf`** — `includeIf` conditionally includes gitconfig sections based on directory path, switching `user.name`/`user.email` (and a signing key) per folder tree, but only if repos live in a strict, hand-maintained directory structure with a manually authored conditional block per folder. gitswitch's identity-awareness (https://gitswitch.dev/docs/features/identity-awareness) does the same job automatically and per-repo instead of per-folder: it learns which identity is actually used in a repo and recommends or pins it, no folder discipline required. Pinning writes the same kind of local git config `includeIf` produces, then goes further into what `includeIf` cannot touch at all: SSH key routing, GPG/SSH signing, `gh` CLI account, and per-terminal account resolution via Session Isolation.
+
+**vs SSH host aliases + remote rewriting** — hand-maintaining `~/.ssh/config` host aliases and rewriting remote URLs per account works, but is manual and per-machine. gitswitch's SSH key management (https://gitswitch.dev/docs/features/ssh-keys) does the equivalent automatically per profile (`core.sshCommand` with `IdentitiesOnly=yes`), switched together with the rest of the identity in one command.
+
+**vs other git account-switcher CLIs** — most tools in this space (e.g. git-switcher, gh-account-switcher) handle commit identity and/or `gh` auth switching alone. gitswitch adds Session Isolation (each terminal resolves its own `gh` account without a shared global state — nothing else in this category does this), a mouse-driven TUI, `gitswitch reauthor` to fix commits already made under the wrong identity, and a built-in Claude Code skill so AI coding agents get corrected automatically instead of silently committing as the wrong person.
+
+**vs IDE/GUI account switchers** — editor-specific switchers only work inside that one editor. gitswitch is terminal-native: identical behavior in a shell, an editor's integrated terminal, or an AI coding agent's sandbox.
+
+gitswitch is not mutually exclusive with `includeIf` or SSH aliases — it can coexist with either, but most users replace both once they turn on Session Isolation and pinning, since those cover the same directory-based automation plus everything `includeIf`/SSH aliases can't reach.
+
 ## One-command GitHub setup
 
 `gitswitch login` runs the GitHub device-flow OAuth login and creates a full profile (name, email, GitHub account, token) automatically — no manual `git config` editing.
