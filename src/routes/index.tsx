@@ -23,6 +23,7 @@ const FEATURES: Array<[string, ReactNode]> = [
   ['ssh key management', <>Sets <code>core.sshCommand</code> to force a specific key with <code>IdentitiesOnly=yes</code>, preventing agent fallback.</>],
   ['gpg signing', <>Per-profile GPG signing key. Switch and your verified-commit badge follows the right identity automatically.</>],
   ['github account sync', <>Keeps <code>gh</code> CLI auth in lockstep with your git identity — one switch, both updated.</>],
+  ['gh cli isolation', <>Two terminals, two GitHub accounts, no fighting. Every <code>gh</code> command resolves the right account for its repo on its own — <code>gh</code>'s single shared global account is never touched.</>],
   ['mouse-driven tui', <>Click, hover, and scroll through profiles, settings, and the setup wizard — not just arrow keys and enter.</>],
   ['ai coding agent setup', <><code>gitswitch claude</code> installs a Claude Code skill; <code>gitswitch reauthor</code> fixes commits an agent already made under the wrong identity.</>],
   ['identity awareness', <>Shell hook learns which identity you use per repo and suggests the right one when you <code>cd</code> in.</>],
@@ -35,6 +36,7 @@ const COMPARE: Array<[string, string, string]> = [
   ['ssh key per identity', '✗', '✓'],
   ['gpg signing key', '✗', '✓'],
   ['per-repo auto-switch', '✗', '✓'],
+  ['parallel gh accounts (multi-terminal)', '✗ (one global account)', '✓ (gh cli isolation)'],
   ['interactive TUI (mouse + keyboard)', '✗', '✓'],
   ['no runtime deps', '✗', '✓ (single binary)'],
 ]
@@ -83,7 +85,7 @@ function Home() {
           ['11', 'color themes'],
           ['∞', 'git profiles'],
           ['5', 'fields per profile'],
-          ['MIT', 'open source'],
+          ['Apache-2.0', 'open source'],
         ].map(([n, l]) => (
           <div className="stat" key={l}>
             <div className="stat-num">{n}</div>
@@ -169,6 +171,7 @@ function Home() {
           <div className="tui-frame">
             <div className="frame-title">shipped · stable + canary</div>
             <div className="frame-body">
+              <p><strong>gh CLI isolation</strong> (canary) — a <code>gh</code> shell wrapper resolves the right GitHub account per repo on every call, so multiple terminals can work as different accounts in parallel without fighting over <code>gh</code>'s single global active account.</p>
               <p><strong>HTTPS credential helper</strong> — keychain-backed PAT routing so HTTPS clones and pushes just work alongside SSH.</p>
               <p><strong>GitHub OAuth login</strong> — <code>gitswitch login</code> authenticates via device flow, creates your profile automatically. No manual config.</p>
               <p><strong>Mouse support + TUI refresh</strong> — full mouse interaction, alias management, shell settings, and release notes built into the TUI.</p>
