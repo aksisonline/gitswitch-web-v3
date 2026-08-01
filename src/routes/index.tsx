@@ -5,9 +5,35 @@ import InstallTabs from '../components/InstallTabs'
 import InstallList from '../components/InstallList'
 import { VERSION } from '../generated/meta'
 
+const FAQ: Array<[string, string]> = [
+  [
+    'Do I need multiple GitHub accounts to use gitswitch?',
+    "No. gitswitch setup checks for git and the GitHub CLI, offers to install whichever's missing, and gitswitch login configures your identity, SSH key, and signing — useful from your very first commit, not just once you have a second account to juggle.",
+  ],
+  [
+    'Is gitswitch beginner-friendly?',
+    "Yes — it's the fastest way to set up git for the first time. No SSH keys to generate by hand, nothing to paste into a settings page.",
+  ],
+  [
+    'Does gitswitch install git and the GitHub CLI for me?',
+    "It checks whether they're installed and, if not, shows you the exact command and asks to run it for you (brew/apt/dnf/winget depending on your platform). On macOS, git itself comes from Apple's Xcode Command Line Tools — that's a GUI dialog gitswitch can't drive for you, so it shows the command instead of running it; the GitHub CLI still installs automatically there.",
+  ],
+]
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: FAQ.map(([q, a]) => ({
+    '@type': 'Question',
+    name: q,
+    acceptedAnswer: { '@type': 'Answer', text: a },
+  })),
+}
+
 export const Route = createFileRoute('/')({
   head: () => ({
     links: [{ rel: 'canonical', href: 'https://gitswitch.dev' }],
+    scripts: [{ type: 'application/ld+json', children: JSON.stringify(faqSchema) }],
   }),
   component: Home,
 })
@@ -66,6 +92,7 @@ function Home() {
           <p className="hero-sub">
             <span className="comment"># No more committing with the wrong account.</span>
             <br />Work with multiple GitHub accounts at the same time, in parallel. For both devs and agents.
+            <br />Also the fastest way to set up git for the first time — one login, and we'll even install git and gh CLI for you if they're missing.
           </p>
           <div className="hero-actions">
             <a href="#install" className="btn-primary">
@@ -159,6 +186,26 @@ function Home() {
               <div className="feature-marker">[{marker}]</div>
               <div className="feature-title">{title}</div>
               <div className="feature-desc">{desc}</div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Beginners / FAQ */}
+      <section className="section">
+        <div className="section-label">starting from zero?</div>
+        <h2 className="section-title">
+          you don't need <em>a second account</em> for this.
+        </h2>
+        <p className="section-sub">
+          gitswitch is also the fastest way to set up git for the first time.
+        </p>
+        <div className="features-grid">
+          {FAQ.map(([q, a], i) => (
+            <div className="feature-card" key={q}>
+              <div className="feature-marker">[{String(i + 1).padStart(2, '0')}]</div>
+              <div className="feature-title">{q}</div>
+              <div className="feature-desc">{a}</div>
             </div>
           ))}
         </div>

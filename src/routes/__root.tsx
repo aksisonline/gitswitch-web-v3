@@ -37,7 +37,7 @@ export const Route = createRootRoute({
       {
         name: 'keywords',
         content:
-          'multiple github accounts, github accounts in parallel, parallel github accounts same machine, session isolation gh cli, gh cli multiple accounts, git account switcher, gitswitch, git config easy switching, git identity manager, multiple git accounts, switch git user, git ssh key management, git profile switcher, git commit identity, github account switcher, git gpg signing, claude code git skill, git setup for ai coding agents',
+          'multiple github accounts, github accounts in parallel, parallel github accounts same machine, session isolation gh cli, gh cli multiple accounts, git account switcher, gitswitch, git config easy switching, git identity manager, multiple git accounts, switch git user, git ssh key management, git profile switcher, git commit identity, github account switcher, git gpg signing, claude code git skill, git setup for ai coding agents, git setup for beginners, first git commit setup, git config automatic setup, gh cli setup no ssh keys',
       },
       { name: 'author', content: 'Abhiram Kanna' },
       { name: 'robots', content: 'index, follow, max-image-preview:large, max-snippet:-1' },
