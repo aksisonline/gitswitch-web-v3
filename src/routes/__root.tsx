@@ -12,7 +12,7 @@ const TITLE = 'gitswitch — Run Multiple GitHub Accounts in Parallel'
 const DESC =
   'Run multiple GitHub accounts in parallel on one machine — for developers and AI coding agents alike. One command handles identity, SSH keys, and GPG signing.'
 const OG_IMAGE_ALT =
-  'gitswitch terminal UI in the Dracula theme, showing the profile list next to the "git identity manager. done right." hero headline'
+  'gitswitch terminal UI in the Dracula theme, showing the profile list next to the "Git, done right." hero headline'
 
 const softwareSchema = {
   '@context': 'https://schema.org',

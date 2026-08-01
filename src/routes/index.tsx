@@ -79,7 +79,7 @@ function Home() {
           <pre className="hero-logo" aria-hidden="true">{LOGO}</pre>
           <div className="hero-badge">{VERSION} · written in go · insert coin</div>
           <h1>
-            git identity manager.
+            Git,
             <br />
             <em>done right.</em>
             <span className="blink" />
@@ -113,10 +113,10 @@ function Home() {
           you're one login <em>away</em> from done.
         </h2>
         <p className="section-sub">
-          <code>gitswitch setup</code> installs git and the GitHub CLI if you don't have them yet.{' '}
-          <code>gitswitch login</code> connects your GitHub account and fills in your name, email, and keys.
-          No SSH keys to generate by hand, nothing to paste into a settings page — and you don't need
-          a second account for any of this to be worth it.
+          Git is the tool that saves every version of your code as you write it — almost every
+          developer uses it, and setting it up usually means a tutorial full of confusing steps.
+          Install gitswitch, run <code>gitswitch setup</code> then <code>gitswitch login</code>, and
+          you're already set up correctly. No configuration files to edit, no second account required.
         </p>
       </section>
 
