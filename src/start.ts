@@ -11,6 +11,8 @@ import { createMiddleware, createStart } from '@tanstack/react-start'
 const GET_HOST = 'get.gitswitch.dev'
 const INSTALL_SCRIPT_URL =
   'https://raw.githubusercontent.com/aksisonline/gitswitch/main/.github/install.sh'
+const INSTALL_PS1_URL =
+  'https://raw.githubusercontent.com/aksisonline/gitswitch/main/.github/install.ps1'
 const AGENT_SETUP_URL = 'https://gitswitch.dev/docs/get-started/agent-setup'
 
 // Same card as gitswitch.dev's own <head> (src/routes/__root.tsx) — same image,
@@ -61,7 +63,10 @@ function browserLandingPage(): Response {
 </html>
 `
   return new Response(html, {
-    headers: { 'content-type': 'text/html; charset=utf-8', 'cache-control': 'public, max-age=300' },
+    headers: {
+      'content-type': 'text/html; charset=utf-8',
+      'cache-control': 'public, max-age=300',
+    },
   })
 }
 
@@ -71,11 +76,10 @@ function wantsAgentJson(request: Request): boolean {
   return accept.includes('application/json') && !accept.includes('text/html')
 }
 
-async function installScriptResponse(): Promise<Response> {
-  const upstream = await fetch(
-    INSTALL_SCRIPT_URL,
-    { cf: { cacheTtl: 300, cacheEverything: true } } as RequestInit,
-  )
+async function proxyScript(upstreamUrl: string): Promise<Response> {
+  const upstream = await fetch(upstreamUrl, {
+    cf: { cacheTtl: 300, cacheEverything: true },
+  } as RequestInit)
   if (!upstream.ok) {
     return new Response('install script temporarily unavailable\n', {
       status: 502,
@@ -90,23 +94,35 @@ async function installScriptResponse(): Promise<Response> {
   })
 }
 
-const gitswitchGetGateway = createMiddleware().server(async ({ next, request }) => {
-  if ((request.headers.get('host') ?? '') !== GET_HOST) return next()
+const gitswitchGetGateway = createMiddleware().server(
+  async ({ next, request }) => {
+    if ((request.headers.get('host') ?? '') !== GET_HOST) return next()
 
-  if (wantsAgentJson(request)) {
-    return Response.json({
-      install_command: 'curl -fsSL https://get.gitswitch.dev | bash',
-      next_steps: ['gitswitch doctor --json', 'gitswitch login', 'gitswitch doctor --json'],
-      docs_url: AGENT_SETUP_URL,
-    })
-  }
+    // Windows: irm https://get.gitswitch.dev/install.ps1 | iex — always plain
+    // text regardless of Accept, same as raw.githubusercontent.com today.
+    if (new URL(request.url).pathname === '/install.ps1') {
+      return proxyScript(INSTALL_PS1_URL)
+    }
 
-  if ((request.headers.get('accept') ?? '').includes('text/html')) {
-    return browserLandingPage()
-  }
+    if (wantsAgentJson(request)) {
+      return Response.json({
+        install_command: 'curl -fsSL https://get.gitswitch.dev | bash',
+        next_steps: [
+          'gitswitch doctor --json',
+          'gitswitch login',
+          'gitswitch doctor --json',
+        ],
+        docs_url: AGENT_SETUP_URL,
+      })
+    }
 
-  return installScriptResponse()
-})
+    if ((request.headers.get('accept') ?? '').includes('text/html')) {
+      return browserLandingPage()
+    }
+
+    return proxyScript(INSTALL_SCRIPT_URL)
+  },
+)
 
 export const startInstance = createStart(() => ({
   requestMiddleware: [gitswitchGetGateway],
