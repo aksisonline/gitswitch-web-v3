@@ -37,10 +37,10 @@ export default function Footer() {
         <div className="footer-links">
           <div>
             <h4>docs</h4>
-            <Link to="/docs/$" params={{ _splat: 'intro' }}>
+            <Link to="/docs/$" params={{ _splat: 'get-started/intro' }}>
               introduction
             </Link>
-            <Link to="/docs/$" params={{ _splat: 'installation' }}>
+            <Link to="/docs/$" params={{ _splat: 'get-started/installation' }}>
               installation
             </Link>
             <Link to="/docs/$" params={{ _splat: 'cli/commands' }}>

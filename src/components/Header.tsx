@@ -23,7 +23,7 @@ export default function Header() {
           </Link>
         </li>
         <li>
-          <Link to="/docs/$" params={{ _splat: 'intro' }}>
+          <Link to="/docs/$" params={{ _splat: 'get-started/intro' }}>
             docs
           </Link>
         </li>
