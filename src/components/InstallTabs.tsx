@@ -6,7 +6,7 @@ const TABS: Array<{ id: string; label: string; cmd: string }> = [
   {
     id: 'curl',
     label: 'curl',
-    cmd: 'curl -fsSL https://raw.githubusercontent.com/aksisonline/gitswitch/main/.github/install.sh | bash',
+    cmd: 'curl -fsSL https://get.gitswitch.dev | bash',
   },
   {
     id: 'windows',

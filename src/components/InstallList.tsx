@@ -3,7 +3,7 @@ import { useState } from 'react'
 
 const METHODS = [
   { label: 'homebrew', note: 'macOS · Linux · recommended', cmd: 'brew install aksisonline/tap/gitswitch' },
-  { label: 'curl', note: 'macOS · Linux · WSL', cmd: 'curl -fsSL https://raw.githubusercontent.com/aksisonline/gitswitch/main/.github/install.sh | bash' },
+  { label: 'curl', note: 'macOS · Linux · WSL', cmd: 'curl -fsSL https://get.gitswitch.dev | bash' },
   { label: 'go install', note: 'any platform · requires go 1.22+', cmd: 'go install github.com/aksisonline/gitswitch@latest' },
   {
     label: 'windows',
