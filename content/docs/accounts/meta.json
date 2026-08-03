@@ -1,0 +1,10 @@
+{
+  "title": "Accounts",
+  "pages": [
+    "accounts",
+    "scopes",
+    "commit-identity",
+    "ssh-keys",
+    "gpg"
+  ]
+}

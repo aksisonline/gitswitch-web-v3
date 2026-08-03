@@ -138,6 +138,30 @@ async function main() {
   }
   console.log(`[sync] wrote ${slugList.length} MDX files to content/docs/`)
 
+  // Fumadocs' loader falls back to alphabetical order + naive title-casing
+  // (e.g. "ai" -> "Ai", "cli" -> "Cli") when a folder has no meta.json. Emit
+  // one at the root (group order) and one per group folder (item order +
+  // the group's label) so the sidebar matches meta.json's groups exactly.
+  const rootPages: Array<string> = []
+  const folderMeta = new Map<string, { title: string; pages: Array<string> }>()
+  for (const group of meta.groups) {
+    const items = group.items.filter((s) => slugSet.has(s))
+    if (items.length === 0) continue
+
+    const dirs = new Set(items.map((s) => (s.includes('/') ? s.split('/')[0] : s)))
+    for (const dir of dirs) if (!rootPages.includes(dir)) rootPages.push(dir)
+
+    if (dirs.size === 1 && items.every((s) => s.includes('/'))) {
+      const [dir] = dirs
+      folderMeta.set(dir, { title: group.label, pages: items.map((s) => s.slice(dir.length + 1)) })
+    }
+  }
+  writeFileSync(join(CONTENT_OUT, 'meta.json'), JSON.stringify({ pages: rootPages }, null, 2) + '\n')
+  for (const [dir, dirMeta] of folderMeta) {
+    writeFileSync(join(CONTENT_OUT, dir, 'meta.json'), JSON.stringify(dirMeta, null, 2) + '\n')
+  }
+  console.log(`[sync] wrote root meta.json + ${folderMeta.size} folder meta.json files`)
+
   const version = await resolveVersion()
   writeFileSync(VERSION_OUT, JSON.stringify({ version }) + '\n')
 

@@ -1,0 +1,9 @@
+{
+  "title": "CLI Reference",
+  "pages": [
+    "commands",
+    "profiles",
+    "config",
+    "channels"
+  ]
+}

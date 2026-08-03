@@ -1,0 +1,10 @@
+{
+  "title": "Automatic Routing",
+  "pages": [
+    "identity-awareness",
+    "session-isolation",
+    "https",
+    "github-sync",
+    "shell"
+  ]
+}

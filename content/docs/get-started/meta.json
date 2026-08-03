@@ -1,0 +1,9 @@
+{
+  "title": "Get Started",
+  "pages": [
+    "intro",
+    "installation",
+    "quick-start",
+    "agent-setup"
+  ]
+}

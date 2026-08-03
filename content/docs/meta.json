@@ -1,0 +1,12 @@
+{
+  "pages": [
+    "get-started",
+    "accounts",
+    "routing",
+    "ai",
+    "guides",
+    "cli",
+    "extras",
+    "troubleshooting"
+  ]
+}
