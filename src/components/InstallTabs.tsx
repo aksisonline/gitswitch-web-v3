@@ -11,7 +11,7 @@ const TABS: Array<{ id: string; label: string; cmd: string }> = [
   {
     id: 'windows',
     label: 'Windows',
-    cmd: 'irm https://raw.githubusercontent.com/aksisonline/gitswitch/main/.github/install.ps1 | iex',
+    cmd: 'irm https://get.gitswitch.dev/install.ps1 | iex',
   },
 ]
 

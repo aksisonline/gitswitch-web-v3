@@ -8,7 +8,7 @@ const METHODS = [
   {
     label: 'windows',
     note: 'PowerShell',
-    cmd: 'irm https://raw.githubusercontent.com/aksisonline/gitswitch/main/.github/install.ps1 | iex',
+    cmd: 'irm https://get.gitswitch.dev/install.ps1 | iex',
   },
 ]
 
