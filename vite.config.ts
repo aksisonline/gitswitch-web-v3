@@ -10,6 +10,10 @@ const config = defineConfig({
     tsconfigPaths: true,
     dedupe: ['react', 'react-dom'],
   },
+  // Lets `bun run dev` be hit with `Host: get.gitswitch.dev` to test the gateway in src/start.ts.
+  server: {
+    allowedHosts: ['get.gitswitch.dev'],
+  },
   plugins: [
     mdx(),
     cloudflare({ viteEnvironment: { name: 'ssr' } }),
