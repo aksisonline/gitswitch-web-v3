@@ -113,10 +113,8 @@ function Home() {
           you're one login <em>away</em> from done.
         </h2>
         <p className="section-sub">
-          Git is the tool that saves every version of your code as you write it — almost every
-          developer uses it, and setting it up usually means a tutorial full of confusing steps.
-          Install gitswitch, run <code>gitswitch setup</code> then <code>gitswitch login</code>, and
-          you're already set up correctly. No configuration files to edit, no second account required.
+          No tutorial, no SSH keys to generate by hand, no config files to edit. Install
+          gitswitch, log in once, and you're set up right — first commit or five hundredth.
         </p>
       </section>
 
