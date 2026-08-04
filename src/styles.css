@@ -1131,26 +1131,31 @@ kbd {
    theme-aware (reads --accent/--bg/etc) and reduced-motion safe.
    ════════════════════════════════════════════════════════════ */
 
-/* Retro grid + scanline backdrop on <body>. Faint, accent-tinted, fixed. */
-body {
-  background-image:
-    linear-gradient(color-mix(in srgb, var(--accent) 4%, transparent) 1px, transparent 1px),
-    linear-gradient(90deg, color-mix(in srgb, var(--accent) 4%, transparent) 1px, transparent 1px);
-  background-size: 44px 44px;
-  background-position: center top;
-  background-attachment: fixed;
-}
+/* Retro grid + radial glow backdrop. Faint, accent-tinted. Lives entirely on
+   this already-`position: fixed` pseudo-element rather than as a
+   `background-attachment: fixed` background on <body> — a fixed-attachment
+   background on the scrolling element itself forces most browsers to
+   repaint it on every scroll frame (cost scaling with how much of the page
+   is dirty), which is what caused the scroll jank past the first couple of
+   sections. A fixed *element* gets its own composited layer instead, so
+   scrolling underneath it is free. */
 body::before {
   content: '';
   position: fixed;
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  background: radial-gradient(
-    ellipse at 50% 0%,
-    color-mix(in srgb, var(--accent) 10%, transparent),
-    transparent 60%
-  );
+  background-image:
+    linear-gradient(color-mix(in srgb, var(--accent) 4%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--accent) 4%, transparent) 1px, transparent 1px),
+    radial-gradient(
+      ellipse at 50% 0%,
+      color-mix(in srgb, var(--accent) 10%, transparent),
+      transparent 60%
+    );
+  background-size: 44px 44px, 44px 44px, 100% 100%;
+  background-repeat: repeat, repeat, no-repeat;
+  background-position: center top, center top, center top;
 }
 /* Lift content above body::before. .navbar is excluded on purpose — it is
    sticky (z-index 50) and listing it here would reset it to relative, which
