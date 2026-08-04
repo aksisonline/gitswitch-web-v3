@@ -45,7 +45,7 @@ const DRACULA = {
   cursor: '#ff79c6',
   title: '#f8f8f2',
   text2: '#d6d3c8',
-  muted: '#6272a4',
+  muted: '#a1abc5',
   check: '#50fa7b',
 }
 
