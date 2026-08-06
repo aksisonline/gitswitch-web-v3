@@ -1,6 +1,7 @@
 'use client'
 import { Link } from '@tanstack/react-router'
 import { VERSION } from '../generated/meta'
+import BuyMeACoffeeButton from './BuyMeACoffeeButton'
 
 export default function Footer() {
   return (
@@ -20,19 +21,22 @@ export default function Footer() {
               Abhiram Kanna
             </a>
           </p>
-          <a
-            href="https://nicklaunches.com/products/gitswitch/?utm_source=gitswitch.dev&utm_medium=badge&utm_campaign=featured"
-            target="_blank"
-            rel="noopener"
-            className="footer-badge"
-          >
-            <img
-              src="https://nicklaunches.com/badges/featured-dark.png"
-              alt="gitswitch on Nick Launches"
-              width={244}
-              height={56}
-            />
-          </a>
+          <div className="footer-badges">
+            <a
+              href="https://nicklaunches.com/products/gitswitch/?utm_source=gitswitch.dev&utm_medium=badge&utm_campaign=featured"
+              target="_blank"
+              rel="noopener"
+              className="footer-badge"
+            >
+              <img
+                src="https://nicklaunches.com/badges/featured-dark.png"
+                alt="gitswitch on Nick Launches"
+                width={150}
+                height={34}
+              />
+            </a>
+            <BuyMeACoffeeButton />
+          </div>
         </div>
         <div className="footer-links">
           <div>
