@@ -10,6 +10,7 @@
     "dev": "vite dev --port 3000",
     "prebuild": "bun run scripts/sync-content.ts",
     "build": "vite build",
+    "postbuild": "bun run scripts/clean-sitemap.ts",
     "preview": "vite preview",
     "deploy": "bun run build && wrangler deploy",
     "cf-typegen": "wrangler types",
