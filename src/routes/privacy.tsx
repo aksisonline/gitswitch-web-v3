@@ -3,7 +3,7 @@ import { createFileRoute } from '@tanstack/react-router'
 export const Route = createFileRoute('/privacy')({
   head: () => ({
     meta: [
-      { title: 'Privacy Policy — gitswitch' },
+      { title: 'Privacy Policy, gitswitch' },
       {
         name: 'description',
         content: "The most honest privacy policy you'll ever read.",
@@ -44,7 +44,7 @@ function Privacy() {
 
           <p>
             No cookies. No tracking pixels. No <em>"we may share your data with trusted partners"</em>{' '}
-            — there are no partners, trusted or otherwise. There is no "we" that receives
+            because there are no partners, trusted or otherwise. There is no "we" that receives
             anything.
           </p>
 

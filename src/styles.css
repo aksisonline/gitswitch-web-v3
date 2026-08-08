@@ -227,6 +227,11 @@ pre {
   backdrop-filter: blur(8px);
   border-bottom: 1px solid var(--border);
   transition: border-color 0.25s, background 0.25s;
+  /* Sticky + backdrop-filter re-samples the backdrop every scroll frame.
+     `contain: paint` scopes that repaint to the navbar's own box instead of
+     letting it invalidate neighboring layout, which is the difference that
+     shows up as scroll jank on high refresh-rate displays. */
+  contain: paint;
 }
 .nav-brand {
   font-weight: 700;
@@ -1023,6 +1028,85 @@ kbd {
 }
 
 /* ────────────────────────────────────────────────────────────
+   Alternatives list (directory-listing style, distinct from
+   features-grid so the page doesn't repeat the same card family)
+   ──────────────────────────────────────────────────────────── */
+.alt-list {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--border);
+}
+.alt-row {
+  display: grid;
+  grid-template-columns: 8rem 1fr;
+  gap: 1rem;
+  padding: 1.1rem 1.25rem;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.15s;
+}
+.alt-row:last-child {
+  border-bottom: none;
+}
+.alt-row:hover {
+  background: var(--bg2);
+}
+.alt-row-marker {
+  color: var(--accent);
+  font-size: 0.72rem;
+  padding-top: 0.15rem;
+}
+.alt-row-title {
+  font-weight: 700;
+  color: var(--title);
+  margin-bottom: 0.35rem;
+  font-size: 0.92rem;
+}
+.alt-row-desc {
+  font-size: 0.82rem;
+  color: var(--text2);
+  line-height: 1.6;
+}
+.alt-row-desc code {
+  color: var(--accent);
+  background: var(--bg2);
+  padding: 0.05em 0.3em;
+  font-size: 0.92em;
+}
+@media (max-width: 640px) {
+  .alt-row {
+    grid-template-columns: 1fr;
+    gap: 0.4rem;
+  }
+}
+
+/* ────────────────────────────────────────────────────────────
+   FAQ (terminal Q&A, not an accordion — only 3 items)
+   ──────────────────────────────────────────────────────────── */
+.faq-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+.faq-q {
+  font-weight: 700;
+  color: var(--title);
+  font-size: 0.92rem;
+  margin-bottom: 0.5rem;
+}
+.faq-q .prompt {
+  color: var(--check);
+  font-weight: 700;
+  margin-right: 0.4rem;
+}
+.faq-a {
+  font-size: 0.85rem;
+  color: var(--text2);
+  line-height: 1.7;
+  padding-left: 1.35rem;
+  border-left: 1px dashed var(--border);
+}
+
+/* ────────────────────────────────────────────────────────────
    Footer
    ──────────────────────────────────────────────────────────── */
 .site-footer {
@@ -1141,16 +1225,12 @@ kbd {
   .features-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-  .install-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
   .roadmap-grid {
     grid-template-columns: 1fr;
   }
 }
 @media (max-width: 640px) {
   .features-grid,
-  .install-grid,
   .roadmap-grid {
     grid-template-columns: 1fr;
   }
@@ -1282,6 +1362,39 @@ main,
     0 0 24px color-mix(in srgb, var(--accent) 28%, transparent);
 }
 
+/* Flagship feature gets an accent-tinted panel so the 3-up grid isn't six
+   identical white-on-white cells. */
+.feature-card--lead {
+  background: color-mix(in srgb, var(--accent) 7%, var(--bg));
+}
+.feature-card--lead:hover {
+  background: color-mix(in srgb, var(--accent) 12%, var(--bg));
+}
+
+/* Scroll reveal, native CSS scroll-driven animation only (no scroll
+   listener, no JS, no animation library). Browsers without support just
+   render the content already visible — true progressive enhancement. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .reveal {
+      opacity: 0;
+      animation: reveal-in linear both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 25%;
+    }
+    @keyframes reveal-in {
+      from {
+        opacity: 0;
+        transform: translateY(14px);
+      }
+      to {
+        opacity: 1;
+        transform: none;
+      }
+    }
+  }
+}
+
 /* ════════════════════════════════════════════════════════════
    CRT overlay (toggle with `v`). Fixed, above everything,
    pointer-events:none. Off by default.
@@ -1325,18 +1438,17 @@ main,
   50% { opacity: 0.42; }
   100% { opacity: 0.36; }
 }
-/* Tiny global wobble when CRT is on — sells the cabinet feel */
+/* ponytail: the old "wobble" animated `filter` on <body>, which repaints the
+   whole page every frame for as long as CRT mode is on (filter isn't
+   compositor-only like transform/opacity). Static filter keeps the phosphor
+   tint with zero per-frame repaint cost. Revisit with a compositor-safe
+   trick (e.g. an animated overlay's mix-blend-mode) if the pulse is missed. */
 html.crt body {
-  animation: crt-breathe 8s ease-in-out infinite;
-}
-@keyframes crt-breathe {
-  0%, 100% { filter: saturate(1.05) contrast(1.02); }
-  50% { filter: saturate(1.12) contrast(1.05); }
+  filter: saturate(1.08) contrast(1.03);
 }
 @media (prefers-reduced-motion: reduce) {
   .hero-logo,
-  .crt-flicker,
-  html.crt body {
+  .crt-flicker {
     animation: none;
   }
 }

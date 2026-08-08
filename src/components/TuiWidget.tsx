@@ -94,7 +94,7 @@ function renderAccounts(s: State, t: Theme) {
   const current = s.profiles.find((p) => p.active)
   const pinNote =
     s.pinnedNick && !s.sessionEnabled
-      ? `<div style="color:${t.muted};font-size:.68rem;margin-top:.35rem">pin on <span style="color:${t.text}">${s.pinnedNick}</span> is inactive — Session Isolation is off (Utilities tab)</div>`
+      ? `<div style="color:${t.muted};font-size:.68rem;margin-top:.35rem">pin on <span style="color:${t.text}">${s.pinnedNick}</span> is inactive, Session Isolation is off (Utilities tab)</div>`
       : ''
   const status = s.statusMsg
     ? `<div style="color:${t.check};font-size:.75rem;margin-top:.35rem">●  ${s.statusMsg}</div>`
@@ -526,7 +526,7 @@ export default function TuiWidget() {
           <span className="tui-dot red" />
           <span className="tui-dot yellow" />
           <span className="tui-dot green" />
-          <span className="tui-title-text">gitswitch — identity manager</span>
+          <span className="tui-title-text">gitswitch: identity manager</span>
         </div>
         <div
           className="tui-body"

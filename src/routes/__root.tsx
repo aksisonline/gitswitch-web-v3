@@ -8,9 +8,9 @@ import { THEME_INIT_SCRIPT } from '#/lib/themes'
 import { RootProvider } from 'fumadocs-ui/provider/tanstack'
 import appCss from '#/styles.css?url'
 
-const TITLE = 'gitswitch — Run Multiple GitHub Accounts in Parallel'
+const TITLE = 'gitswitch: Run Multiple GitHub Accounts in Parallel'
 const DESC =
-  'Run multiple GitHub accounts in parallel on one machine — for developers and AI coding agents alike. One command handles identity, SSH keys, and GPG signing.'
+  'Run multiple GitHub accounts in parallel on one machine, for developers and AI coding agents alike. One command handles identity, SSH keys, and GPG signing.'
 const OG_IMAGE_ALT =
   'gitswitch terminal UI in the Dracula theme, showing the profile list next to the "Git, done right." hero headline'
 

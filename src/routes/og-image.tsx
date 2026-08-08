@@ -50,7 +50,7 @@ const DRACULA = {
 }
 
 const HEADLINE = ['Git,', 'done right.']
-const SUB = 'Run multiple GitHub accounts in parallel — or set one up for the first time.'
+const SUB = 'Run multiple GitHub accounts in parallel, or set one up for the first time.'
 
 function OgImage() {
   const d = DRACULA
@@ -144,7 +144,7 @@ function OgImage() {
             <span style={{ width: 10, height: 10, borderRadius: '50%', background: d.check, display: 'inline-block' }} />
           </div>
           <div style={{ position: 'absolute', inset: 0, textAlign: 'center', lineHeight: '32px', color: d.muted, fontSize: 12 }}>
-            gitswitch — identity manager
+            gitswitch: identity manager
           </div>
         </div>
         <div style={{ padding: '18px 20px', display: 'flex', flexDirection: 'column', gap: 14, flex: 1 }}>

@@ -12,7 +12,7 @@ export default function Footer() {
             <span className="prompt">$</span> gitswitch <span className="star">✦</span>
           </div>
           <p className="footer-tag">
-            Run multiple GitHub accounts in parallel on the same machine — plus name,
+            Run multiple GitHub accounts in parallel on the same machine, plus name,
             email, SSH key, and GPG signing, switched instantly.
           </p>
           <p className="footer-meta">
