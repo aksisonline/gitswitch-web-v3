@@ -18,6 +18,18 @@ const FAQ: Array<[string, string]> = [
     'Does gitswitch install git and the GitHub CLI for me?',
     "It checks whether they're installed and, if not, shows you the exact command and asks to run it for you (brew/apt/dnf/winget depending on your platform). On macOS, git itself comes from Apple's Xcode Command Line Tools, a GUI dialog gitswitch can't drive for you, so it shows the command instead of running it; the GitHub CLI still installs automatically there.",
   ],
+  [
+    'How do I prevent accidental commits with the wrong GitHub email?',
+    "Pin the repo once with gitswitch pin work (or personal) — it writes the correct identity into that repo's local git config, so every future commit there uses the right name and email even if your global identity is set to something else. Already committed under the wrong one? gitswitch reauthor rewrites author/committer on commits that already exist.",
+  ],
+  [
+    'How do I use gh CLI with multiple accounts in different terminals at once?',
+    "Turn on Session Isolation (default on new installs): each terminal's bare gh commands resolve to whichever account owns the repo you're standing in, so two terminals can run as two different GitHub accounts simultaneously without one flipping the other's global auth state.",
+  ],
+  [
+    'How do I use separate SSH or GPG signing keys per GitHub account without hand-editing includeIf blocks?',
+    "gitswitch add attaches an SSH key and/or signing key to a profile, then switching profiles sets core.sshCommand with IdentitiesOnly=yes so the right key gets offered, no SSH agent fallback and no per-directory includeIf config to maintain.",
+  ],
 ]
 
 const faqSchema = {

@@ -8,25 +8,25 @@ Written in Go, single binary, no runtime dependencies. Runs entirely on the user
 
 ## Getting started
 
-- [Introduction](https://gitswitch.dev/docs/intro): what gitswitch does and why it exists
-- [Installation](https://gitswitch.dev/docs/installation): Homebrew and curl install methods
-- [Quick start](https://gitswitch.dev/docs/quick-start): first profile, first switch
+- [Introduction](https://gitswitch.dev/docs/get-started/intro): what gitswitch does and why it exists
+- [Installation](https://gitswitch.dev/docs/get-started/installation): Homebrew and curl install methods
+- [Quick start](https://gitswitch.dev/docs/get-started/quick-start): first profile, first switch
 
 ## Features
 
-- [Commit identity switching](https://gitswitch.dev/docs/features/commit-identity): changes `user.name` / `user.email` in git config
-- [SSH key management](https://gitswitch.dev/docs/features/ssh-keys): forces a specific key per profile via `core.sshCommand`
-- [GPG signing](https://gitswitch.dev/docs/features/gpg): per-profile signing key for verified commits
-- [GitHub account sync](https://gitswitch.dev/docs/features/github-sync): keeps `gh` CLI auth in lockstep with the active identity
-- [Session Isolation](https://gitswitch.dev/docs/features/session-isolation): each terminal resolves its own `gh` account, so multiple GitHub accounts run in parallel on one machine without fighting over `gh`'s single global active account. On by default for new installs.
-- [Identity awareness](https://gitswitch.dev/docs/features/identity-awareness): shell hook that recommends the right identity per repo, and repo pins that write straight into that repo's local git config
-- [Shell integration](https://gitswitch.dev/docs/features/shell): `gitswitch install` wires up prompt segment, nudge hook, and tab completion
+- [Commit identity switching](https://gitswitch.dev/docs/accounts/commit-identity): changes `user.name` / `user.email` in git config
+- [SSH key management](https://gitswitch.dev/docs/accounts/ssh-keys): forces a specific key per profile via `core.sshCommand`
+- [GPG signing](https://gitswitch.dev/docs/accounts/gpg): per-profile signing key for verified commits
+- [GitHub account sync](https://gitswitch.dev/docs/routing/github-sync): keeps `gh` CLI auth in lockstep with the active identity
+- [Session Isolation](https://gitswitch.dev/docs/routing/session-isolation): each terminal resolves its own `gh` account, so multiple GitHub accounts run in parallel on one machine without fighting over `gh`'s single global active account. On by default for new installs.
+- [Identity awareness](https://gitswitch.dev/docs/routing/identity-awareness): shell hook that recommends the right identity per repo, and repo pins that write straight into that repo's local git config
+- [Shell integration](https://gitswitch.dev/docs/routing/shell): `gitswitch install` wires up prompt segment, nudge hook, and tab completion
 
 ## How gitswitch compares
 
-**vs Git's built-in `includeIf`** — `includeIf` conditionally includes gitconfig sections based on directory path, switching `user.name`/`user.email` (and a signing key) per folder tree, but only if repos live in a strict, hand-maintained directory structure with a manually authored conditional block per folder. gitswitch's identity-awareness (https://gitswitch.dev/docs/features/identity-awareness) does the same job automatically and per-repo instead of per-folder: it learns which identity is actually used in a repo and recommends or pins it, no folder discipline required. Pinning writes the same kind of local git config `includeIf` produces, then goes further into what `includeIf` cannot touch at all: SSH key routing, GPG/SSH signing, `gh` CLI account, and per-terminal account resolution via Session Isolation.
+**vs Git's built-in `includeIf`** — `includeIf` conditionally includes gitconfig sections based on directory path, switching `user.name`/`user.email` (and a signing key) per folder tree, but only if repos live in a strict, hand-maintained directory structure with a manually authored conditional block per folder. gitswitch's identity-awareness (https://gitswitch.dev/docs/routing/identity-awareness) does the same job automatically and per-repo instead of per-folder: it learns which identity is actually used in a repo and recommends or pins it, no folder discipline required. Pinning writes the same kind of local git config `includeIf` produces, then goes further into what `includeIf` cannot touch at all: SSH key routing, GPG/SSH signing, `gh` CLI account, and per-terminal account resolution via Session Isolation.
 
-**vs SSH host aliases + remote rewriting** — hand-maintaining `~/.ssh/config` host aliases and rewriting remote URLs per account works, but is manual and per-machine. gitswitch's SSH key management (https://gitswitch.dev/docs/features/ssh-keys) does the equivalent automatically per profile (`core.sshCommand` with `IdentitiesOnly=yes`), switched together with the rest of the identity in one command.
+**vs SSH host aliases + remote rewriting** — hand-maintaining `~/.ssh/config` host aliases and rewriting remote URLs per account works, but is manual and per-machine. gitswitch's SSH key management (https://gitswitch.dev/docs/accounts/ssh-keys) does the equivalent automatically per profile (`core.sshCommand` with `IdentitiesOnly=yes`), switched together with the rest of the identity in one command.
 
 **vs other git account-switcher CLIs** — most tools in this space (e.g. git-switcher, gh-account-switcher) handle commit identity and/or `gh` auth switching alone. gitswitch adds Session Isolation (each terminal resolves its own `gh` account without a shared global state — nothing else in this category does this), a mouse-driven TUI, `gitswitch reauthor` to fix commits already made under the wrong identity, and a built-in Claude Code skill so AI coding agents get corrected automatically instead of silently committing as the wrong person.
 
@@ -46,9 +46,9 @@ gitswitch is not mutually exclusive with `includeIf` or SSH aliases — it can c
 
 ## Scenarios
 
-- [Freelancer with multiple clients](https://gitswitch.dev/docs/scenarios/freelancer)
-- [Open source contributor](https://gitswitch.dev/docs/scenarios/oss)
-- [Multiple GitHub accounts](https://gitswitch.dev/docs/scenarios/multi-github)
+- [Freelancer with multiple clients](https://gitswitch.dev/docs/guides/freelancer)
+- [Open source contributor](https://gitswitch.dev/docs/guides/oss)
+- [Multiple GitHub accounts](https://gitswitch.dev/docs/guides/multi-github)
 
 ## Source
 

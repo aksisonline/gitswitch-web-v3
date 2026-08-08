@@ -50,6 +50,20 @@ gitswitch pin work
 
 ## "My push went out as the wrong GitHub account"
 
+```
+remote: Permission to user/repo.git denied to personal-account.
+fatal: unable to access 'https://github.com/user/repo.git/': The requested URL returned error: 403
+```
+
+or over SSH:
+
+```
+ERROR: Permission to user/repo.git denied to personal-account.
+fatal: Could not read from remote repository.
+```
+
+Either one means the credential or key actually offered doesn't match the account you meant to push as.
+
 For **HTTPS** remotes, run `gitswitch doctor`. If you see this:
 
 ```
