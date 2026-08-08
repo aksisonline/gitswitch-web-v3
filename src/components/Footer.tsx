@@ -40,7 +40,7 @@ export default function Footer() {
         </div>
         <div className="footer-links">
           <div>
-            <h4>docs</h4>
+            <h3>docs</h3>
             <Link to="/docs/$" params={{ _splat: 'get-started/intro' }}>
               introduction
             </Link>
@@ -52,7 +52,7 @@ export default function Footer() {
             </Link>
           </div>
           <div>
-            <h4>project</h4>
+            <h3>project</h3>
             <a
               href="https://github.com/aksisonline/gitswitch"
               target="_blank"

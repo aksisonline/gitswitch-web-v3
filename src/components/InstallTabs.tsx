@@ -29,17 +29,19 @@ export default function InstallTabs() {
 
   return (
     <div className="hero-install">
-      <div className="hero-install-tabs" role="tablist">
-        {TABS.map((t) => (
-          <button
-            key={t.id}
-            role="tab"
-            className={`hi-tab${active === t.id ? ' active' : ''}`}
-            onClick={() => setActive(t.id)}
-          >
-            {t.label}
-          </button>
-        ))}
+      <div className="hero-install-tabs">
+        <div role="tablist" style={{ display: 'contents' }}>
+          {TABS.map((t) => (
+            <button
+              key={t.id}
+              role="tab"
+              className={`hi-tab${active === t.id ? ' active' : ''}`}
+              onClick={() => setActive(t.id)}
+            >
+              {t.label}
+            </button>
+          ))}
+        </div>
         <a className="hi-tab hi-tab-link" href="#install">
           view all options →
         </a>

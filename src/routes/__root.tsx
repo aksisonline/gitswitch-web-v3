@@ -5,7 +5,6 @@ import EasterEggs from '#/components/EasterEggs'
 import CrtOverlay from '#/components/CrtOverlay'
 import { ThemeProvider } from '#/lib/theme-context'
 import { THEME_INIT_SCRIPT } from '#/lib/themes'
-import { RootProvider } from 'fumadocs-ui/provider/tanstack'
 import appCss from '#/styles.css?url'
 
 const TITLE = 'gitswitch: Run Multiple GitHub Accounts in Parallel'
@@ -58,6 +57,12 @@ export const Route = createRootRoute({
       { name: 'twitter:image:alt', content: OG_IMAGE_ALT },
     ],
     links: [
+      { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
+      { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossOrigin: 'anonymous' },
+      {
+        rel: 'stylesheet',
+        href: 'https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&display=swap',
+      },
       { rel: 'stylesheet', href: appCss },
       { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
     ],
@@ -76,24 +81,16 @@ function RootDocument() {
         <HeadContent />
       </head>
       <body>
-        {/* RootProvider powers Fumadocs search dialog + theme on /docs pages.
-            Fumadocs' inline/block code (Shiki) picks --shiki-light vs
-            --shiki-dark purely off next-themes' `.dark` class, which
-            defaults to following each device's OS color-scheme — so a
-            phone in light mode rendered GitHub-light code colors against
-            our always-dark background while a desktop in dark mode didn't.
-            The site has no light variant (see `color-scheme: dark` in
-            styles.css), so force dark unconditionally. */}
-        <RootProvider theme={{ forcedTheme: 'dark', enableSystem: false }}>
-          {/* ThemeProvider drives the terminal palette on the marketing site */}
-          <ThemeProvider>
-            <Header />
-            <Outlet />
-            <Footer />
-            <EasterEggs />
-            <CrtOverlay />
-          </ThemeProvider>
-        </RootProvider>
+        {/* ThemeProvider drives the terminal palette on the marketing site.
+            fumadocs-ui's RootProvider (search dialog + Shiki theme) lives in
+            docs/$.tsx instead of here, so its JS only ships to /docs pages. */}
+        <ThemeProvider>
+          <Header />
+          <Outlet />
+          <Footer />
+          <EasterEggs />
+          <CrtOverlay />
+        </ThemeProvider>
         <Scripts />
       </body>
     </html>

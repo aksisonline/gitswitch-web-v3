@@ -1,6 +1,6 @@
 'use client'
 import { useCallback, useEffect, useReducer, useRef, useState } from 'react'
-import { THEMES, type Theme } from '../lib/themes'
+import { THEMES, readableOn, type Theme } from '../lib/themes'
 import { useTheme } from '../lib/theme-context'
 
 type Profile = { nick: string; name: string; email: string; active: boolean }
@@ -52,7 +52,7 @@ function renderTabBar(s: State, t: Theme) {
     (label, i) =>
       `<span data-tab="${i}" onmousedown="event.preventDefault()" onpointerup="if(event.button===0){window.__tuiDispatch({type:'tab', tab:${i}})}" style="cursor:pointer;${
         i === s.tab
-          ? `background:${t.accent};color:${t.bg};font-weight:700;`
+          ? `background:${t.accent};color:${readableOn(t.accent)};font-weight:700;`
           : `color:${t.muted};`
       }padding:.05rem .5rem">${label}</span>`,
   )

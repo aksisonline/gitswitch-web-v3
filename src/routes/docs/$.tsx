@@ -7,6 +7,7 @@ import {
   DocsPage,
   DocsTitle,
 } from 'fumadocs-ui/layouts/docs/page'
+import { RootProvider } from 'fumadocs-ui/provider/tanstack'
 import { useFumadocsLoader } from 'fumadocs-core/source/client'
 import { Suspense } from 'react'
 import { slugsToMarkdownPath, source } from '#/lib/source'
@@ -84,8 +85,16 @@ const clientLoader = browserCollections.docs.createClientLoader({
 function Page() {
   const { path, pageTree, markdownUrl } = useFumadocsLoader(Route.useLoaderData())
   return (
-    <DocsLayout {...baseOptions()} tree={pageTree}>
-      <Suspense>{clientLoader.useContent(path, { markdownUrl, path })}</Suspense>
-    </DocsLayout>
+    // Fumadocs' inline/block code (Shiki) picks --shiki-light vs --shiki-dark
+    // purely off next-themes' `.dark` class, which defaults to following each
+    // device's OS color-scheme — so a phone in light mode rendered
+    // GitHub-light code colors against our always-dark background while a
+    // desktop in dark mode didn't. The site has no light variant (see
+    // `color-scheme: dark` in styles.css), so force dark unconditionally.
+    <RootProvider theme={{ forcedTheme: 'dark', enableSystem: false }}>
+      <DocsLayout {...baseOptions()} tree={pageTree}>
+        <Suspense>{clientLoader.useContent(path, { markdownUrl, path })}</Suspense>
+      </DocsLayout>
+    </RootProvider>
   )
 }

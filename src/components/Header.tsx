@@ -38,7 +38,7 @@ export default function Header() {
           className="theme-tag"
           onClick={cycle}
           title="Cycle theme (press c)"
-          aria-label="Cycle color theme"
+          aria-label={`theme · ${name}, click to cycle`}
         >
           theme · <b>{name}</b>
         </button>

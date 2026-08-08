@@ -37,6 +37,23 @@ export const THEMES: Array<Theme> = [
   { name: 'Synthwave',   bg: '#262335', bg2: '#2d2845', bg3: '#3a2d4a', border: '#4a3d5c', accent: '#ff7edb', cursor: '#36f9f6', title: '#ffffff', text: '#ffffff', text2: '#e2d9f3', muted: '#a095b3', check: '#72f1b8', dot: '#ff7edb' },
 ]
 
+// Picks whichever of black/white has higher WCAG contrast against `hex` — used
+// where an accent color becomes a background (e.g. the active-tab chip in
+// TuiWidget), so the text stays readable across all 13 themes without having
+// to hand-tune each one like `muted` above.
+export function readableOn(hex: string): string {
+  const n = parseInt(hex.slice(1), 16)
+  const channel = (v: number) => {
+    v /= 255
+    return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4)
+  }
+  const [r, g, b] = [(n >> 16) & 255, (n >> 8) & 255, n & 255].map(channel)
+  const luminance = 0.2126 * r + 0.7152 * g + 0.0722 * b
+  const contrastWithBlack = (luminance + 0.05) / 0.05
+  const contrastWithWhite = 1.05 / (luminance + 0.05)
+  return contrastWithBlack > contrastWithWhite ? '#000000' : '#ffffff'
+}
+
 export const STORAGE_KEY = 'gitswitch:theme-idx'
 
 export const DEFAULT_THEME_IDX = THEMES.findIndex((t) => t.name === 'Dracula')
