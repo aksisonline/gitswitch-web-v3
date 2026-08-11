@@ -24,7 +24,7 @@ const FAQ: Array<[string, string]> = [
   ],
   [
     'How do I use gh CLI with multiple accounts in different terminals at once?',
-    "Turn on Session Isolation (default on new installs): each terminal's bare gh commands resolve to whichever account owns the repo you're standing in, so two terminals can run as two different GitHub accounts simultaneously without one flipping the other's global auth state.",
+    "Turn on Session Isolation (default on new installs): each terminal's bare gh commands resolve to whichever account owns the repo you're standing in, so any number of terminals can run as different GitHub accounts simultaneously without one flipping the other's global auth state.",
   ],
   [
     'How do I use separate SSH or GPG signing keys per GitHub account without hand-editing includeIf blocks?',
@@ -60,7 +60,7 @@ const FEATURES: Array<[string, ReactNode]> = [
   ['commit identity switching', <>Instantly change <code>user.name</code> and <code>user.email</code> in your global git config. No more wrong-email commits.</>],
   ['ssh key management', <>Sets <code>core.sshCommand</code> to force a specific key with <code>IdentitiesOnly=yes</code>, preventing agent fallback.</>],
   ['gpg signing', <>Per-profile GPG or SSH signing key. Switch and your verified-commit badge follows the right identity automatically.</>],
-  ['session isolation', <>Two terminals, two GitHub accounts, no fighting. Every <code>gh</code> command resolves the right account for its repo on its own, on by default for new installs.</>],
+  ['session isolation', <>Any number of terminals, any number of GitHub accounts, no fighting. Every <code>gh</code> command resolves the right account for its repo on its own, on by default for new installs.</>],
   ['ai coding agent setup', <><code>gitswitch claude</code> installs a Claude Code skill; <code>gitswitch reauthor</code> fixes commits an agent already made under the wrong identity.</>],
 ]
 
@@ -229,7 +229,7 @@ function Home() {
           <div className="tui-frame">
             <div className="frame-title">shipped · stable</div>
             <div className="frame-body">
-              <p><strong>Session isolation:</strong> two terminals, two GitHub accounts, no fighting over <code>gh</code>'s single global account.</p>
+              <p><strong>Session isolation:</strong> any number of terminals, any number of GitHub accounts, no fighting over <code>gh</code>'s single global account.</p>
               <p><strong>Pins write into the repo:</strong> <code>gitswitch pin work</code> sticks for good, without touching your global identity.</p>
               <p><strong>GitHub OAuth login:</strong> <code>gitswitch login</code> authenticates via device flow, no manual config.</p>
               <p><strong><code>gitswitch reauthor</code>:</strong> rewrites author/committer identity on commits already made under the wrong profile.</p>
