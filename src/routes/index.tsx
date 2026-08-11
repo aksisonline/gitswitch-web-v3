@@ -56,12 +56,12 @@ const LOGO = String.raw`  ___  _  _      ___        _  _      _
  \___||_| \__|  |___/  \_/\_/ |_| \__|\__||_||_|`
 
 const FEATURES: Array<[string, ReactNode]> = [
-  ['one-login setup', <><code>gitswitch login</code>: GitHub device flow creates your profile automatically, name, email, GitHub account, token. No manual config.</>],
-  ['commit identity switching', <>Instantly change <code>user.name</code> and <code>user.email</code> in your global git config. No more wrong-email commits.</>],
-  ['ssh key management', <>Sets <code>core.sshCommand</code> to force a specific key with <code>IdentitiesOnly=yes</code>, preventing agent fallback.</>],
-  ['gpg signing', <>Per-profile GPG or SSH signing key. Switch and your verified-commit badge follows the right identity automatically.</>],
-  ['session isolation', <>Any number of terminals, any number of GitHub accounts, no fighting. Every <code>gh</code> command resolves the right account for its repo on its own, on by default for new installs.</>],
-  ['ai coding agent setup', <><code>gitswitch claude</code> installs a Claude Code skill; <code>gitswitch reauthor</code> fixes commits an agent already made under the wrong identity.</>],
+  ['identity', <>Switch <code>user.name</code> and <code>user.email</code> globally, instantly, or pin a repo once and it never needs switching again — even across every terminal you open.</>],
+  ['parallel accounts', <>Any number of terminals, any number of GitHub accounts, no fighting. Every <code>gh</code> command resolves the right account for its repo on its own — including the ones an AI agent opens for you.</>],
+  ['ai setup', <><code>gitswitch claude</code> installs a Claude Code skill; <code>gitswitch reauthor</code> fixes commits an agent already made under the wrong identity. Works the same for a human who's brand new to git.</>],
+  ['setup', <><code>gitswitch login</code>: GitHub device flow creates your profile automatically — name, email, GitHub account, token, and an SSH key if you want one.</>],
+  ['ssh keys', <>Sets <code>core.sshCommand</code> to force a specific key with <code>IdentitiesOnly=yes</code>, preventing agent fallback — the same key doubles as your signing key.</>],
+  ['commit signing', <>Per-profile GPG or SSH signing key. Switch and your verified-commit badge follows the right identity automatically.</>],
 ]
 
 const ALTERNATIVES: Array<[string, string, ReactNode]> = [
