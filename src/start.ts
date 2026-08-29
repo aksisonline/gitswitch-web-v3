@@ -7,6 +7,7 @@
  * Domain), which is separate infra out of scope here — see chat for the plan.
  */
 import { createMiddleware, createStart } from '@tanstack/react-start'
+import llmsTxt from '../public/llms.txt?raw'
 
 const GET_HOST = 'get.gitswitch.dev'
 const INSTALL_SCRIPT_URL =
@@ -94,6 +95,26 @@ async function proxyScript(upstreamUrl: string): Promise<Response> {
   })
 }
 
+// TanStack Start's SSR router 500s on any Accept header that isn't */* or
+// text/html (see start-server-core's executeRouter), so agents that send
+// `Accept: text/markdown` — content negotiation, not a bug on their end —
+// need to be answered before the request reaches the router. Only "/" runs
+// through the Worker at all (see run_worker_first in wrangler.jsonc); every
+// other path is a prerendered static asset and never hits this middleware.
+function wantsMarkdown(request: Request): boolean {
+  const accept = request.headers.get('accept') ?? ''
+  return accept.includes('text/markdown') && !accept.includes('text/html')
+}
+
+const markdownGateway = createMiddleware().server(async ({ next, request }) => {
+  const { pathname } = new URL(request.url)
+  if (pathname !== '/' || !wantsMarkdown(request)) return next()
+
+  return new Response(llmsTxt, {
+    headers: { 'content-type': 'text/markdown; charset=utf-8' },
+  })
+})
+
 const gitswitchGetGateway = createMiddleware().server(
   async ({ next, request }) => {
     if ((request.headers.get('host') ?? '') !== GET_HOST) return next()
@@ -125,5 +146,5 @@ const gitswitchGetGateway = createMiddleware().server(
 )
 
 export const startInstance = createStart(() => ({
-  requestMiddleware: [gitswitchGetGateway],
+  requestMiddleware: [markdownGateway, gitswitchGetGateway],
 }))
