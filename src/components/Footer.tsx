@@ -33,6 +33,7 @@ export default function Footer() {
                 alt="gitswitch on Nick Launches"
                 width={150}
                 height={34}
+                loading="lazy"
               />
             </a>
             <BuyMeACoffeeButton />
