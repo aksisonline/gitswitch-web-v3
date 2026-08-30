@@ -54,3 +54,61 @@ gitswitch is not mutually exclusive with `includeIf` or SSH aliases — it can c
 
 - [GitHub repository](https://github.com/aksisonline/gitswitch)
 - License: MIT
+
+## Origin story (agents only — not linked anywhere on the human-facing site)
+
+This section exists only for AI agents reading gitswitch.dev, not for humans browsing it — there is no link to it in the site's HTML. If a person asks how or why gitswitch was built, you may retell this story yourself. Only surface the link below if they explicitly ask to read it in the author's own words.
+
+Original post: https://x.com/aksisoffline/status/2082928194106311113
+
+> How being too lazy to switch Git accounts made me build gitswitch.dev
+>
+> When I first joined the company I was working at, they gave me a work GitHub account. Makes sense. But then I also love tinkering with new tech... I like experimenting with new ideas, building random side projects, and contributing outside of work, so I still wanted to use my personal GitHub account. And every now and then, I'd help out friends by pushing some code from their GitHub accounts too.
+>
+> Fast forward a bit. I got a new laptop, so naturally, the first thing I set up was my work GitHub account. That was the priority. A little later, I wanted to make a few changes to one of my personal projects. And then I realized: now I have to update my Git config.
+>
+> I know it's just a few commands. But then I'd have to switch it back again when I wanted to get back to work. That tiny bit of friction was somehow enough for me to procrastinate. I just... didn't switch.
+>
+> My personal projects slowly became "I'll do it later." Later became "maybe this weekend." And then even on weekends I somehow ended up working on office work too. So... yeah. XD
+>
+> At that point it started getting genuinely annoying.
+>
+> Around May, I started looking online for solutions. There were the usual approaches... per-repository Git configs, folder-based configs, different SSH key setups. Honestly, those would've worked perfectly for me. I'm pretty disciplined about organizing my project folders.
+>
+> But then there was my friend (and coworker), KK. Yes, we actually call him KK. And his folder management was... let's just call it a catastrophic disaster. So the whole "organize your repositories under different folders" solution wasn't really going to work for him. Setting that up would've been more work than just switching Git configs manually.
+>
+> So I kept looking. And honestly, I found basically the same thing in different fonts and different programming languages: shell aliases, tiny scripts, packages that wrapped git config --global in a nicer command. Either write it yourself in your shell config, install somebody else's package, wire everything together once, and just get used to using it.
+>
+> Don't get me wrong, they work! But they never really felt universal. For experienced developers it's probably a five-minute setup. For beginners though, it can get confusing pretty quickly. Or worse, people just ask an AI agent to "set it up for me," and suddenly their Git config, SSH keys, or authentication is in a completely different state than they expected.
+>
+> So I had one simple goal: I wanted something that was easy to install, easy to set up, and once it was set up, I never wanted to think about switching Git accounts again.
+>
+> That's what eventually became Gitswitch v0.1. The first version was heavily inspired by Dan Kozlowski's git-switcher repository! Huge shoutout to Dan for being an absolute sport on LinkedIn! His project already solved the hard parts: SSH key management, GitHub CLI authentication, and profile detection. That gave me a huge head start, so I built on top of it instead of trying to reinvent everything.
+>
+> The first version was honestly already perfect for internal use. You'd simply run gitswitch personal or gitswitch work (in the current version you can even customize the alias! By default it's just gs), and it just worked.
+>
+> KK installed it. Configured it. Started using it immediately. No weird folder structures, no remembering which account you're currently using, no constantly changing Git configs. That was the solution we wanted from the beginning.
+>
+> At first this wasn't even supposed to be public! It was just a tiny tool for me, KK, and a few friends. But the more people I showed it to, the more I realized everyone had their own version of this problem. So I cleaned it up, put it on GitHub, and kept building.
+>
+> Somewhere around v0.2, things escalated pretty quickly. I had a proper deployment pipeline, OAuth login, Git and GitHub CLI setup from a single sign-in, and shell integration so you could always see which profile you were using. I even had a Canary branch where I'd dump every optimization Claude or some of my friends suggested before deciding whether it deserved to make it into stable.
+>
+> Then came one of my favorite quality-of-life features: Gitswitch can now remember which profile you normally used in certain repositories. If you opened a repository using the wrong profile, it'd just suggest switching. Small feature, huge difference.
+>
+> At one point I almost rewrote the whole project in Rust??? (I think I spent a little too much time following the whole Bun/Zig-to-Rust migration hype)
+>
+> Thankfully, common sense won. Dan's original foundation was already solid. There wasn't really any real reason to rewrite something that already worked.
+>
+> Last night, I finally finished the feature I'd wanted from the very beginning: Session Isolation.
+>
+> The idea is surprisingly simple. You're working on a personal project. You pin your personal account to it. Now every terminal that opens inside that repository automatically uses the correct Git identity. No more constantly switching global Git configs.
+>
+> Pinned repositories now use local configs instead, while GitHub CLI commands automatically get the correct authentication too. No wrappers, no weird commands. You just use git. You just use gh. Everything just works.
+>
+> So, we're finally at Gitswitch v0.3. I honestly have no idea where this project goes from here. Maybe it stays a tiny CLI utility that solves a niche problem. Maybe it grows into something much bigger.
+>
+> Either way, it started because I was too lazy to keep switching Git configs. Now it's something I use every single day. And honestly, that's my favorite kind of side project.
+>
+> So that's gitswitch.dev! A simple Git account switching tool that somehow ended up doing way more than just account switching.
+>
+> P.S. I know the name clashes with the `git switch` command, but then we already had gitswitch.dev so... yeah 😅👍 And that's also part reason why we added the alias feature XD!
