@@ -1,146 +1,315 @@
 ---
-title: Two GitHub Accounts
-description: Personal and work on one machine, start to finish
+title: Using Multiple GitHub Accounts in Parallel
+description: Stop leaking work commits to personal repos. Learn how to manage multiple GitHub accounts in parallel using GitSwitch or native SSH conditional includes.
 ---
-The most common setup, and the one gitswitch was built for. Two GitHub accounts — `alice` (personal) and `alice-corp` (work) — on one laptop.
 
-No SSH keys to generate. No keys to paste into a settings page. No `~/.ssh/config` host aliases.
+> **Quick Answer: How to use multiple GitHub accounts in parallel**
+> To run multiple GitHub accounts simultaneously on the same machine without credential collisions, you must isolate three layers:
+> 1. **Commit Identity (`user.name` & `user.email`):** Prevent authorship leaks by setting identity per repository or folder rather than globally.
+> 2. **SSH Authentication:** Separate SSH keys using `~/.ssh/config` host aliases or Git `core.sshCommand` with `IdentitiesOnly=yes`.
+> 3. **GitHub CLI (`gh`) & HTTPS Tokens:** Keep per-terminal session tokens isolated so concurrent terminal windows or background AI coding agents don't overwrite each other's active session.
 
-## Set up
+Managing multiple GitHub accounts—such as `alice` (personal) and `alice-corp` (work)—on a single machine is one of the most common friction points in modern software development.
+
+Whether you are switching between client work and side projects, or running parallel terminal tabs alongside AI coding agents like Claude Code or Cursor, global credentials inevitably collide.
+
+This guide explains:
+- **[The Problem: Why Multiple GitHub Accounts Frustrate Developers](#the-problem-why-managing-multiple-github-accounts-is-frustrating)**
+- **[Solution 1: Automating Parallel Accounts with GitSwitch](#solution-1-automating-parallel-accounts-with-gitswitch)** (Recommended: Zero manual SSH hacking, per-terminal isolation, automatic HTTPS/SSH routing)
+- **[Solution 2: Configuring Multiple GitHub Accounts via Native Git IncludeIf & SSH](#solution-2-configuring-multiple-github-accounts-via-native-git-includeif--ssh)** (Manual, folder-based setup)
+- **[Feature Comparison](#feature-comparison-native-vs-gitswitch)**
+- **[SSH vs HTTPS: The Authentication Divide](#ssh-vs-https-the-authentication-divide)**
+- **[Operating System Specific Tips](#operating-system-specific-tips)** (macOS, Windows, Linux)
+- **[Frequently Asked Questions](#frequently-asked-questions)**
+
+---
+
+## The Problem: Why Managing Multiple GitHub Accounts is Frustrating
+
+By default, Git and GitHub assume a single person owns the entire computer. This creates three critical failure modes:
+
+1. **The Global Git Config Leak:** Git defaults to `git config --global user.email`. If you work on an internal corporate repository and then switch to an open-source project, running `git commit` stamps your corporate email into the public Git log permanently.
+2. **SSH Agent Key Collisions:** When connecting to `github.com`, the SSH agent offers all loaded keys sequentially until one succeeds. If your personal key has read access to an organization, Git may authenticate as your personal account even when pushing to a company repository.
+3. **GitHub CLI (`gh`) Global State Collisions:** The official GitHub CLI (`gh`) stores active authentication globally in `~/.config/gh/hosts.yml`. If Terminal 1 runs `gh auth switch` for work, Terminal 2 (running your personal project in parallel) instantly flips to the work account. This breaks parallel workflows and background AI coding agents.
+
+---
+
+## Solution 1: Automating Parallel Accounts with GitSwitch
+
+[GitSwitch](https://gitswitch.dev) is built from the ground up to allow multiple GitHub accounts to run in parallel on a single machine with zero manual SSH config hacking.
+
+### Step 1: Install and Enable Shell Integration
+
+```bash
+# macOS / Linux (Homebrew)
+brew install aksisonline/gitswitch/gitswitch
+
+# Or via install script
+curl -fsSL https://gitswitch.dev/install.sh | bash
+```
+
+Enable shell integration (which sets up prompt indicators and automatic Session Isolation):
 
 ```bash
 gitswitch shell
 ```
 
-Say yes to all three steps (they're the defaults), then reload your shell.
+Say `yes` to the defaults, then reload your shell (`source ~/.zshrc` or `source ~/.bashrc`).
+
+### Step 2: Connect Your GitHub Accounts
+
+Add your profiles using one-command OAuth device login:
 
 ```bash
-gitswitch login --profile personal    # log in as alice
-gitswitch login --profile work        # run it again, log in as alice-corp
+gitswitch login --profile personal    # Connects alice (personal)
+gitswitch login --profile work        # Connects alice-corp (work)
 ```
+
+Verify your accounts:
 
 ```bash
 gitswitch list
 ```
 
-```
-✓  personal        Alice Smith <alice@gmail.com>
-   work            Alice Smith <alice@company.com>
+```text
+✓  personal        Alice Smith <alice@gmail.com> (gh: alice)
+   work            Alice Smith <alice@company.com> (gh: alice-corp)
 ```
 
-> Also make sure both accounts are logged in to `gh` (`gh auth status`, `gh auth login`). gitswitch gets push tokens from `gh`, so that's what makes the automatic routing below actually route.
+> **Note:** Ensure both accounts are logged in to `gh` (`gh auth login`). GitSwitch uses GitHub CLI tokens to route pushes and API calls automatically.
 
-## Claim your repos
+### Step 3: Claim and Pin Your Repositories
+
+Instead of forcing your repositories into rigid directory trees, simply pin the desired identity once inside each repository:
 
 ```bash
-cd ~/projects/my-library  && gitswitch pin personal
-cd ~/work/internal-api    && gitswitch pin work
+cd ~/projects/my-library && gitswitch pin personal
+cd ~/work/internal-api   && gitswitch pin work
 ```
 
-That's the whole setup. Everything from here is just... working.
+That's the entire setup. Everything from here works automatically:
+- Every `git commit` in `~/projects/my-library` is authored as `alice@gmail.com`.
+- Every `git commit` in `~/work/internal-api` is authored as `alice@company.com`.
+- Your shell prompt visually displays the active profile:
+  ```text
+  ~/projects/my-library  [personal●] ❯
+  ~/work/internal-api    [work●] ❯
+  ```
 
-## Every day
+### Step 4: Parallel Terminals and Session Isolation
+
+With GitSwitch's built-in [Session Isolation](/docs/routing/session-isolation), multiple terminals run side-by-side without account interference:
 
 ```bash
+# Terminal 1 (Work Repo)
 cd ~/work/internal-api
-git commit -m "Fix bug"
-git push
-# committed as alice@company.com, pushed as alice-corp
-```
+gh pr create             # Authenticates and creates PR as alice-corp
 
-```bash
+# Terminal 2 (Personal Repo, simultaneously)
 cd ~/projects/my-library
-git commit -m "Add feature"
-git push
-# committed as alice@gmail.com, pushed as alice — no switching, no thinking
+gh pr create             # Authenticates and creates PR as alice
 ```
 
-Your prompt tells you which is which:
+Neither terminal modifies `~/.config/gh/hosts.yml`. GitSwitch dynamically passes the scoped `GH_TOKEN` directly to each command based on directory context.
 
-```
-~/projects/my-library  [personal●] ❯
-~/work/internal-api    [work●] ❯
-```
+### Accidental Push Under Wrong Account? Fix It Instantly
 
-And if you want it spelled out:
+If you committed under the wrong email before configuring GitSwitch:
 
 ```bash
-gitswitch current
-# work — Alice Smith <alice@company.com>  (pinned to this repo)
-```
-
-## Cloning
-
-```bash
-gitswitch personal
-git clone git@github.com:alice/my-project.git
-# or the https:// URL — gitswitch routes the right token either way
-
-gitswitch work
-git clone git@github.com:alice-corp/company-service.git
-```
-
-Then pin the new clone and forget about it.
-
-## `gh` follows along
-
-With [Session Isolation](/docs/routing/session-isolation) on (the default), bare `gh` commands resolve to whichever account owns the repo you're standing in — even in two terminals at once:
-
-```bash
-cd ~/work/internal-api && gh pr create      # as alice-corp
-cd ~/projects/my-library && gh issue list   # as alice, simultaneously
-```
-
-Notifications for each account, no switching:
-
-```bash
-cd ~/work/internal-api    && gh api /notifications
-cd ~/projects/my-library  && gh api /notifications
-```
-
-## Contributing to someone else's repo
-
-Pick the identity you want to be seen as, then pin it so the repo never asks again:
-
-```bash
-git clone git@github.com:someone/open-project.git
-cd open-project
-gitswitch pin personal
-git commit -m "Add contribution" && git push
-```
-
-## Already pushed as the wrong account?
-
-```bash
+# Rewrites the last commit author and safely force-pushes
 gitswitch reauthor 1 --to personal --push
-# rewrites the last commit and force-pushes with --force-with-lease
+
+# Or rewrite multiple commits selectively by old email:
+gitswitch reauthor 5 --to personal --from alice@company.com --push
 ```
 
-Then pin the repo so it can't happen twice. If someone else has already pulled those commits, tell them before you rewrite.
+---
 
-## Lots of repos?
+## Solution 2: Configuring Multiple GitHub Accounts via Native Git IncludeIf & SSH
 
-Organise by account and pin as you go — the [learning](/docs/routing/identity-awareness) covers the ones you haven't got to yet:
+If you prefer configuring everything manually without third-party utilities, Git provides native conditional configuration via `includeIf`, combined with SSH host aliases.
 
-```
-~/github/
-├── alice/          # personal
-└── alice-corp/     # work
-```
+### Step 1: Organize Your Repositories into Strict Folders
 
-## Prefer your own SSH keys?
-
-Entirely optional — HTTPS is the default and needs nothing from you. But if you already manage keys:
+The native approach requires strict folder discipline. You cannot mix personal and work projects in the same folder:
 
 ```bash
-gitswitch add personal "Alice" alice@gmail.com \
-  --ssh-key ~/.ssh/id_personal --gh-user alice
+mkdir -p ~/git/personal
+mkdir -p ~/git/work
 ```
 
-See [SSH Keys](/docs/accounts/ssh-keys).
+### Step 2: Generate Dedicated SSH Keys
 
-## Next
+Generate a unique SSH keypair for each GitHub account:
 
-- **[Open Source + Work](/docs/guides/oss)** — when one account is a company account
-- **[Multi-client Freelancer](/docs/guides/freelancer)** — three or more accounts
-- **[Pins & Identity Awareness](/docs/routing/identity-awareness)**
+```bash
+# Generate personal key
+ssh-keygen -t ed25519 -C "alice@gmail.com" -f ~/.ssh/id_ed25519_personal
+
+# Generate work key
+ssh-keygen -t ed25519 -C "alice@company.com" -f ~/.ssh/id_ed25519_work
+```
+
+Add the respective public keys (`~/.ssh/id_ed25519_personal.pub` and `~/.ssh/id_ed25519_work.pub`) to your respective GitHub accounts under **Settings → SSH and GPG Keys**.
+
+### Step 3: Configure `~/.ssh/config`
+
+Configure SSH host aliases so SSH routes to the correct key for each account:
+
+```ini
+# Personal GitHub Account
+Host github.com-personal
+    HostName github.com
+    User git
+    IdentityFile ~/.ssh/id_ed25519_personal
+    IdentitiesOnly yes
+
+# Work GitHub Account
+Host github.com-work
+    HostName github.com
+    User git
+    IdentityFile ~/.ssh/id_ed25519_work
+    IdentitiesOnly yes
+```
+
+> **Crucial:** `IdentitiesOnly yes` is required to prevent the SSH agent from attempting every available key.
+
+### Step 4: Configure Folder-Specific Git Configs (`includeIf`)
+
+Create separate config files for each profile:
+
+**`~/.gitconfig-personal`**:
+```ini
+[user]
+    name = Alice Smith
+    email = alice@gmail.com
+
+[core]
+    sshCommand = ssh -i ~/.ssh/id_ed25519_personal -F /dev/null
+```
+
+**`~/.gitconfig-work`**:
+```ini
+[user]
+    name = Alice Smith
+    email = alice@company.com
+
+[core]
+    sshCommand = ssh -i ~/.ssh/id_ed25519_work -F /dev/null
+```
+
+Now update your global **`~/.gitconfig`** to conditionally load these configs based on the repository path:
+
+```ini
+[includeIf "gitdir:~/git/personal/"]
+    path = ~/.gitconfig-personal
+
+[includeIf "gitdir:~/git/work/"]
+    path = ~/.gitconfig-work
+```
+
+*(Note for Windows: Use forward slashes in path configs, e.g. `gitdir:C:/Users/alice/git/work/`)*.
+
+### Step 5: Cloning Repositories with Native Aliases
+
+When using native SSH host aliases, you **must modify the clone URL** for every repository:
+
+```bash
+# Work repository (use github.com-work alias)
+git clone git@github.com-work:alice-corp/internal-api.git ~/git/work/internal-api
+
+# Personal repository (use github.com-personal alias)
+git clone git@github.com-personal:alice/my-library.git ~/git/personal/my-library
+```
+
+If you forget to rewrite the remote host, SSH defaults to standard `github.com` and authentication fails.
+
+---
+
+## Feature Comparison: Native vs GitSwitch
+
+| Capability | Native `includeIf` + SSH Config | GitSwitch |
+| :--- | :--- | :--- |
+| **Commit Identity Switching** | Automatic (folder-based) | Automatic (repo-pinned or learned) |
+| **Directory Structure Required** | **Strict** (`~/work/`, `~/personal/`) | **None** (repos can live anywhere) |
+| **Clone URL Rewriting** | **Required** (`github.com-work`) | **None** (standard URLs work) |
+| **GitHub CLI (`gh`) Isolation** | ❌ None (`gh` active account collides) | ✓ Session Isolation per terminal |
+| **AI Coding Agent Safety** | ❌ Agents leak credentials outside folder | ✓ Sub-process & terminal isolation |
+| **Fix Past Commits** | Manual `git rebase -i` | `gitswitch reauthor` |
+| **Setup Overhead** | 15–30 minutes manual file editing | Under 2 minutes (`gitswitch shell`) |
+
+---
+
+## SSH vs HTTPS: The Authentication Divide
+
+A common question when managing multiple GitHub accounts is whether to use SSH or HTTPS:
+
+1. **HTTPS & OS Credential Managers:**
+   When cloning via HTTPS (`https://github.com/...`), Git delegates credential storage to helpers such as macOS Keychain, Windows Credential Manager, or Git Credential Manager (GCM). These managers associate credentials with the domain name (`github.com`). Switching accounts often causes the credential helper to overwrite or supply the wrong token, causing `403 Permission Denied` errors or silent account mix-ups.
+2. **SSH Authentication:**
+   SSH keys bypass the OS credential helper and authenticate directly via public-key cryptography. However, native SSH requires configuring host aliases unless you use a router like GitSwitch.
+3. **How GitSwitch Solves Both:**
+   GitSwitch routes both SSH and HTTPS automatically. For HTTPS repositories, it supplies the correct scoped OAuth token per repository. For SSH, it assigns the matching key via `core.sshCommand`.
+
+---
+
+## Operating System Specific Tips
+
+### macOS
+macOS stores HTTPS Git credentials in Keychain. If you notice Git pushing with an old account, purge the stored credential:
+```bash
+git credential-osxkeychain erase
+host=github.com
+protocol=https
+[Press Return twice]
+```
+
+### Windows (PowerShell & WSL)
+When configuring native `includeIf` in Windows Git:
+- Always use forward slashes in `~/.gitconfig` (e.g., `gitdir:C:/Users/username/work/`).
+- Trailing slashes are mandatory (e.g., `gitdir:~/work/`, not `gitdir:~/work`).
+- Windows Credential Manager caches GitHub tokens under `Generic Credentials` (`git:https://github.com`). Remove stale entries if token collisions occur.
+
+### Linux
+Ensure `ssh-agent` is running if using password-protected SSH keys:
+```bash
+eval "$(ssh-agent -s)"
+ssh-add ~/.ssh/id_ed25519_work
+```
+
+---
+
+## Frequently Asked Questions
+
+### Can I use two GitHub accounts on the same computer?
+Yes. You can manage multiple GitHub accounts on one computer by assigning separate SSH keys and commit emails to each account. You can isolate them manually using Git's native `includeIf` directive and `~/.ssh/config`, or automatically using [GitSwitch](https://gitswitch.dev).
+
+### How do I use multiple GitHub accounts in parallel without switching?
+To run accounts in parallel without switching manually, use directory-based or session-based isolation:
+- **Directory Pinning:** Pin your account to the repository or directory so Git automatically selects the correct credentials without modifying global configuration.
+- **Session Isolation:** Ensure your GitHub CLI (`gh`) tokens are scoped per terminal session rather than shared globally in `~/.config/gh/hosts.yml`.
+
+### How to change GitHub account in terminal?
+To switch your active GitHub identity in the terminal:
+- With GitSwitch: Run `gitswitch <profile-name>` (e.g. `gitswitch work`).
+- With native Git: Change local repository config using `git config user.email "you@company.com"` and `git config user.name "Your Name"`.
+- With GitHub CLI: Run `gh auth switch --user <username>`. (Note: `gh auth switch` changes API tokens globally, not commit emails).
+
+### Why does Git push to GitHub using the wrong account?
+Commit authorship and push authorization are handled by completely different mechanisms:
+- **Author identity** is controlled by `user.email` in Git config.
+- **Push credentials** are determined by your SSH key or HTTPS credential manager.
+If your `user.email` is set to your work address but your SSH key or macOS Keychain supplies your personal token, GitHub accepts the push from your personal account while displaying the work author email, causing avatar and permissions mismatches.
+
+### Can I have a personal and work GitHub account on the same machine?
+Yes. Having both personal and work accounts is supported by GitHub's Terms of Service. Using per-repository pins or `includeIf` configurations guarantees that work proprietary code is never committed under your personal handle or pushed using personal keys.
+
+---
+
+## Next Steps
+
+- **[Identity Awareness & Pinning](/docs/routing/identity-awareness)** — how GitSwitch learns your repos
+- **[Session Isolation Deep Dive](/docs/routing/session-isolation)** — how concurrent terminal isolation works
+- **[Multi-client Freelancer Guide](/docs/guides/freelancer)** — managing 3+ accounts across multiple clients
+- **[Troubleshooting Credential Conflicts](/docs/troubleshooting)** — resolve existing Git credential errors

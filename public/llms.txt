@@ -48,7 +48,7 @@ gitswitch is not mutually exclusive with `includeIf` or SSH aliases — it can c
 
 - [Freelancer with multiple clients](https://gitswitch.dev/docs/guides/freelancer)
 - [Open source contributor](https://gitswitch.dev/docs/guides/oss)
-- [Multiple GitHub accounts](https://gitswitch.dev/docs/guides/multi-github)
+- [Using multiple GitHub accounts in parallel](https://gitswitch.dev/docs/guides/multi-github): run personal and work accounts side-by-side without credential collisions
 
 ## Source
 

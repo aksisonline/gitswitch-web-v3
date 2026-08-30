@@ -29,6 +29,23 @@ export const Route = createFileRoute('/docs/$')({
     const { title, description, url } = loaderData
     const pageTitle = `${title} — gitswitch docs`
     const canonicalUrl = `https://gitswitch.dev${url}`
+    const articleSchema = {
+      '@context': 'https://schema.org',
+      '@type': 'TechArticle',
+      headline: title,
+      description: description,
+      url: canonicalUrl,
+      author: {
+        '@type': 'Person',
+        name: 'Abhiram Kanna',
+        url: 'https://abhiramkanna.com',
+      },
+      publisher: {
+        '@type': 'Organization',
+        name: 'gitswitch',
+        url: 'https://gitswitch.dev',
+      },
+    }
     return {
       meta: [
         { title: pageTitle },
@@ -36,10 +53,21 @@ export const Route = createFileRoute('/docs/$')({
         { property: 'og:title', content: pageTitle },
         { property: 'og:description', content: description },
         { property: 'og:url', content: canonicalUrl },
+        { property: 'og:type', content: 'article' },
+        { property: 'og:site_name', content: 'gitswitch' },
+        { property: 'og:image', content: 'https://gitswitch.dev/og-image.png' },
+        { name: 'twitter:card', content: 'summary_large_image' },
         { name: 'twitter:title', content: pageTitle },
         { name: 'twitter:description', content: description },
+        { name: 'twitter:image', content: 'https://gitswitch.dev/og-image.png' },
       ],
       links: [{ rel: 'canonical', href: canonicalUrl }],
+      scripts: [
+        {
+          type: 'application/ld+json',
+          children: JSON.stringify(articleSchema),
+        },
+      ],
     }
   },
   notFoundComponent: () => (
