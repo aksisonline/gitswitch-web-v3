@@ -57,11 +57,12 @@ export const Route = createRootRoute({
       { name: 'twitter:image:alt', content: OG_IMAGE_ALT },
     ],
     links: [
-      { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
-      { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossOrigin: 'anonymous' },
       {
-        rel: 'stylesheet',
-        href: 'https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&display=swap',
+        rel: 'preload',
+        as: 'font',
+        type: 'font/woff2',
+        href: '/fonts/jetbrains-mono-latin.woff2',
+        crossOrigin: 'anonymous',
       },
       { rel: 'stylesheet', href: appCss },
       { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
