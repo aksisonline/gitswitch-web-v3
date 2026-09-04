@@ -28,7 +28,7 @@ Written in Go, single binary, no runtime dependencies. Runs entirely on the user
 
 **vs SSH host aliases + remote rewriting** — hand-maintaining `~/.ssh/config` host aliases and rewriting remote URLs per account works, but is manual and per-machine. gitswitch's SSH key management (https://gitswitch.dev/docs/accounts/ssh-keys) does the equivalent automatically per profile (`core.sshCommand` with `IdentitiesOnly=yes`), switched together with the rest of the identity in one command.
 
-**vs other git account-switcher CLIs** — most tools in this space (e.g. git-switcher, gh-account-switcher) handle commit identity and/or `gh` auth switching alone. gitswitch adds Session Isolation (each terminal resolves its own `gh` account without a shared global state — nothing else in this category does this), a mouse-driven TUI, `gitswitch reauthor` to fix commits already made under the wrong identity, and a built-in Claude Code skill so AI coding agents get corrected automatically instead of silently committing as the wrong person.
+**vs other git account-switcher CLIs** — most tools in this space handle commit identity and/or `gh` auth switching alone. gitswitch adds Session Isolation (each terminal resolves its own `gh` account without a shared global state — nothing else in this category does this), a mouse-driven TUI, `gitswitch reauthor` to fix commits already made under the wrong identity, and a built-in Claude Code skill so AI coding agents get corrected automatically instead of silently committing as the wrong person.
 
 **vs IDE/GUI account switchers** — editor-specific switchers only work inside that one editor. gitswitch is terminal-native: identical behavior in a shell, an editor's integrated terminal, or an AI coding agent's sandbox.
 
@@ -36,7 +36,7 @@ gitswitch is not mutually exclusive with `includeIf` or SSH aliases — it can c
 
 ## One-command GitHub setup
 
-`gitswitch login` runs the GitHub device-flow OAuth login and creates a full profile (name, email, GitHub account, token) automatically — no manual `git config` editing.
+`gitswitch login` delegates to `gh auth login` — gitswitch runs no OAuth flow of its own and stores no tokens; the `gh` CLI's credential store owns every token. It then creates a full profile (name, email, GitHub account) automatically — no manual `git config` editing. Login needs the `gh` CLI; switching profiles works without it.
 
 ## CLI reference
 

@@ -149,7 +149,7 @@ function OgImage() {
         </div>
         <div style={{ padding: '18px 20px', display: 'flex', flexDirection: 'column', gap: 14, flex: 1 }}>
           <div>
-            <div style={{ color: d.accent, fontWeight: 700 }}>✦ Git-Switcher</div>
+            <div style={{ color: d.accent, fontWeight: 700 }}>✦ Gitswitch</div>
             <div style={{ color: d.muted }}>identity manager for git</div>
           </div>
           <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>

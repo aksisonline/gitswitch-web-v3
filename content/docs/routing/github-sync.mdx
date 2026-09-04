@@ -92,14 +92,6 @@ gh auth status       # the GitHub API account
 gitswitch current    # the git commit identity
 ```
 
-## The lite `gh gitswitch` extension
-
-There's also a standalone [`gh` CLI extension](https://github.com/aksisonline/gh-gitswitch) — `gh gitswitch <account>` runs `gh auth switch` and syncs global git identity together, in one command, with no gitswitch install required. It's the on-ramp: one global identity at a time, plus a guard that warns (not blocks, by default) when your active `gh` account and your git identity disagree.
-
-It shares this exact config file (`~/.config/gitswitch/config.yaml`) with the full CLI — same `Profile` schema, same code (`internal/storage`, `internal/git`) under the hood, not a lookalike reimplementation. Install either first, add the other later, in either order — a profile created by one shows up in the other immediately, nothing to migrate.
-
-What it deliberately doesn't do: Session Isolation, repo pins, the credential helper, the TUI. A single global git identity can't run two accounts in two terminals at once — that's what Session Isolation is for, and it's the reason `gh gitswitch` can't be a true hook on top of `gh auth switch` itself (`gh` has no hook point for its own built-in commands; only a shell-level wrapper — which is what Session Isolation already installs — can actually intercept it).
-
 ## Next
 
 - **[Session Isolation](/docs/routing/session-isolation)** — per-repo, per-terminal `gh`

@@ -20,7 +20,7 @@ jobs:
 
       - run: bun install --frozen-lockfile
 
-      - name: Sync docs from git-switcher
+      - name: Sync docs from gitswitch
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           RELEASE_VERSION: ${{ github.event.client_payload.version }}

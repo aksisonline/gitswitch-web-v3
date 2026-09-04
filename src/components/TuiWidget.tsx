@@ -63,7 +63,7 @@ function renderTabBar(s: State, t: Theme) {
 
 function renderHeader(t: Theme) {
   return `<div style="color:${t.muted};margin-bottom:.5rem">
-  <span style="color:${t.accent};font-weight:700">  ✦  Git-Switcher</span><br>
+  <span style="color:${t.accent};font-weight:700">  ✦  Gitswitch</span><br>
      identity manager for git
 </div>`
 }

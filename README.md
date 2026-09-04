@@ -10,8 +10,8 @@ gitswitch repo and a few hidden easter eggs.
 ## How it fits together
 
 ```
-git-switcher repo                         gitswitch-web-v3 (this repo)
-─────────────────                         ────────────────────────────
+gitswitch repo                            gitswitch-web-v3 (this repo)
+──────────────                            ────────────────────────────
 docs/public/**.md  ─┐                     scripts/sync-content.ts
 docs/public/meta.json│  build-time fetch  ─► reads docs (sibling in dev,
 docs/privacy-policy.md┘                       sparse git clone in CI)
@@ -31,8 +31,9 @@ GitHub Releases API ────────────────────
 bun run scripts/sync-content.ts   # runs automatically before dev/build
 ```
 
-In dev it reads the sibling checkout `../git-switcher/docs/public`. In CI (no
-sibling) it sparse-clones `docs/public` from GitHub.
+In dev it reads the sibling checkout `../git-switcher/docs/public` (the gitswitch
+repo's local directory name). In CI (no sibling) it sparse-clones `docs/public`
+from GitHub.
 
 ## Develop
 

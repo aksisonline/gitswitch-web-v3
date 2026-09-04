@@ -12,7 +12,7 @@ dist-ssr
 __unconfig*
 todos.json
 
-# build-time generated content (synced from git-switcher repo)
+# build-time generated content (synced from the gitswitch repo)
 src/generated/
 .docs-cache/
 

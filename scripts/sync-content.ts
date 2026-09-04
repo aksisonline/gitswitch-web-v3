@@ -1,10 +1,11 @@
 /**
  * Build-time content sync.
  *
- * Single source of truth for docs + version lives in the git-switcher repo:
+ * Single source of truth for docs + version lives in the gitswitch repo:
  *   github.com/aksisonline/gitswitch  ->  docs/public/**.md  + docs/public/meta.json
  *
- * In local dev we read the sibling checkout (../git-switcher/docs/public).
+ * In local dev we read the sibling checkout (../git-switcher/docs/public —
+ * the gitswitch repo's local directory name on the maintainer's machine).
  * In CI we sparse-clone just docs/public from GitHub.
  *
  * Outputs:

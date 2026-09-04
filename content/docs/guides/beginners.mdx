@@ -40,22 +40,21 @@ Once git and `gh` are there:
 gitswitch login
 ```
 
-Opens GitHub in your browser (device flow — you type a short code, GitHub does the rest), then fills in your name, email, and GitHub account automatically:
+Hands off to `gh auth login` (browser, device code, or token — whichever `gh` offers you), then fills in your name, email, and GitHub account automatically:
 
 ```
 ✓  Logged in as yourname (github.com)
 ✓  Profile "yourname" created
-✓  Token stored in keychain
 ```
 
 That's it. `git commit` and `git push` now work, correctly attributed, with no SSH key you had to generate or paste anywhere.
 
 ## You're done — but you're not stuck
 
-If you ever *do* pick up a second account (a job, a client, an open-source project you contribute to), everything here already applies — see [Multiple GitHub Accounts in Parallel](/docs/guides/multi-github). Nothing about starting with one account locks you out of adding a second later; there's no migration step.
+If you ever *do* pick up a second account (a job, a client, an open-source project you contribute to), everything here already applies — see [Multi-account GitHub](/docs/guides/multi-github). Nothing about starting with one account locks you out of adding a second later; there's no migration step.
 
 ## Next
 
 - **[Quick Start](/docs/get-started/quick-start)** — the full command walkthrough
-- **[Multiple GitHub Accounts in Parallel](/docs/guides/multi-github)** — when you add a second account
+- **[Multi-account GitHub](/docs/guides/multi-github)** — when you add a second account
 - **[Troubleshooting](/docs/troubleshooting)** — if gitswitch can't find a package manager it recognizes

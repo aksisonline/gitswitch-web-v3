@@ -59,7 +59,7 @@ const FEATURES: Array<[string, ReactNode]> = [
   ['identity', <>Switch <code>user.name</code> and <code>user.email</code> globally, instantly, or pin a repo once and it never needs switching again — even across every terminal you open.</>],
   ['parallel accounts', <>Any number of terminals, any number of GitHub accounts, no fighting. Every <code>gh</code> command resolves the right account for its repo on its own — including the ones an AI agent opens for you.</>],
   ['ai setup', <><code>gitswitch claude</code> installs a Claude Code skill; <code>gitswitch reauthor</code> fixes commits an agent already made under the wrong identity. Works the same for a human who's brand new to git.</>],
-  ['setup', <><code>gitswitch login</code>: GitHub device flow creates your profile automatically — name, email, GitHub account, token, and an SSH key if you want one.</>],
+  ['setup', <><code>gitswitch login</code> hands off to <code>gh auth login</code>, then creates your profile automatically — name, email, GitHub account, and an SSH key if you want one. No token to copy anywhere.</>],
   ['ssh keys', <>Sets <code>core.sshCommand</code> to force a specific key with <code>IdentitiesOnly=yes</code>, preventing agent fallback — the same key doubles as your signing key.</>],
   ['commit signing', <>Per-profile GPG or SSH signing key. Switch and your verified-commit badge follows the right identity automatically.</>],
 ]
@@ -231,7 +231,7 @@ function Home() {
             <div className="frame-body">
               <p><strong>Session isolation:</strong> any number of terminals, any number of GitHub accounts, no fighting over <code>gh</code>'s single global account.</p>
               <p><strong>Pins write into the repo:</strong> <code>gitswitch pin work</code> sticks for good, without touching your global identity.</p>
-              <p><strong>GitHub OAuth login:</strong> <code>gitswitch login</code> authenticates via device flow, no manual config.</p>
+              <p><strong>GitHub login:</strong> <code>gitswitch login</code> delegates to <code>gh auth login</code> — no custom OAuth app, no token juggling, no manual config.</p>
               <p><strong><code>gitswitch reauthor</code>:</strong> rewrites author/committer identity on commits already made under the wrong profile.</p>
               <p><a href="https://github.com/aksisonline/gitswitch/releases" target="_blank" rel="noreferrer">full changelog ↗</a></p>
             </div>
