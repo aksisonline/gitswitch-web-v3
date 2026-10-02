@@ -7,145 +7,235 @@ import { VERSION } from '../generated/meta'
 
 const FAQ: Array<[string, string]> = [
   [
-    'Do I need multiple GitHub accounts to use gitswitch?',
-    "No. gitswitch setup checks for git and the GitHub CLI, offers to install whichever's missing, and gitswitch login configures your identity, SSH key, and signing. That's useful from your very first commit, not just once you have a second account to juggle.",
+    'Do I need multiple GitHub accounts?',
+    'No. gitswitch can also set up Git and GitHub CLI for your first commit.',
   ],
   [
-    'Is gitswitch beginner-friendly?',
-    "Yes, it's the fastest way to set up git for the first time. No SSH keys to generate by hand, nothing to paste into a settings page.",
+    'Does gitswitch replace GitHub CLI?',
+    'No. gitswitch adds repo-aware identity and session management around your existing Git and GitHub CLI workflow.',
   ],
   [
-    'Does gitswitch install git and the GitHub CLI for me?',
-    "It checks whether they're installed and, if not, shows you the exact command and asks to run it for you (brew/apt/dnf/winget depending on your platform). On macOS, git itself comes from Apple's Xcode Command Line Tools, a GUI dialog gitswitch can't drive for you, so it shows the command instead of running it; the GitHub CLI still installs automatically there.",
+    'Do I need to create SSH keys by hand?',
+    'No. Add a key to a profile if you want to use one; you can also start without configuring one.',
   ],
   [
-    'How do I prevent accidental commits with the wrong GitHub email?',
-    "Pin the repo once with gitswitch pin work (or personal) — it writes the correct identity into that repo's local git config, so every future commit there uses the right name and email even if your global identity is set to something else. Already committed under the wrong one? gitswitch reauthor rewrites author/committer on commits that already exist.",
+    'Can it fix a commit I already made?',
+    'Yes. gitswitch reauthor rewrites the author and committer on existing commits. If the commits are already shared, coordinate before rewriting history.',
   ],
   [
-    'How do I use gh CLI with multiple accounts in different terminals at once?',
-    "Turn on Session Isolation (default on new installs): each terminal's bare gh commands resolve to whichever account owns the repo you're standing in, so any number of terminals can run as different GitHub accounts simultaneously without one flipping the other's global auth state.",
-  ],
-  [
-    'How do I use separate SSH or GPG signing keys per GitHub account without hand-editing includeIf blocks?',
-    "gitswitch add attaches an SSH key and/or signing key to a profile, then switching profiles sets core.sshCommand with IdentitiesOnly=yes so the right key gets offered, no SSH agent fallback and no per-directory includeIf config to maintain.",
+    'Is gitswitch open source?',
+    'Yes. It’s written in Go and licensed under Apache-2.0.',
   ],
 ]
-
-const faqSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'FAQPage',
-  mainEntity: FAQ.map(([q, a]) => ({
-    '@type': 'Question',
-    name: q,
-    acceptedAnswer: { '@type': 'Answer', text: a },
-  })),
-}
 
 export const Route = createFileRoute('/')({
   head: () => ({
     links: [{ rel: 'canonical', href: 'https://gitswitch.dev' }],
-    scripts: [{ type: 'application/ld+json', children: JSON.stringify(faqSchema) }],
+    scripts: [
+      {
+        type: 'application/ld+json',
+        children: JSON.stringify({
+          '@context': 'https://schema.org',
+          '@type': 'FAQPage',
+          mainEntity: FAQ.map(([q, a]) => ({
+            '@type': 'Question',
+            name: q,
+            acceptedAnswer: { '@type': 'Answer', text: a },
+          })),
+        }),
+      },
+    ],
   }),
   component: Home,
 })
 
-const LOGO = String.raw`  ___  _  _      ___        _  _      _
- / __|(_)| |_   / __| __ __ __(_)| |_  __ | |_
-| (_ || ||  _|  \__ \ \ V  V /| ||  _|/ _|| ' \
- \___||_| \__|  |___/  \_/\_/ |_| \__|\__||_||_|`
-
 const FEATURES: Array<[string, ReactNode]> = [
-  ['identity', <>Switch <code>user.name</code> and <code>user.email</code> globally, instantly, or pin a repo once and it never needs switching again — even across every terminal you open.</>],
-  ['parallel accounts', <>Any number of terminals, any number of GitHub accounts, no fighting. Every <code>gh</code> command resolves the right account for its repo on its own — including the ones an AI agent opens for you.</>],
-  ['ai setup', <><code>gitswitch claude</code> installs a Claude Code skill; <code>gitswitch reauthor</code> fixes commits an agent already made under the wrong identity. Works the same for a human who's brand new to git.</>],
-  ['setup', <><code>gitswitch login</code> hands off to <code>gh auth login</code>, then creates your profile automatically — name, email, GitHub account, and an SSH key if you want one. No token to copy anywhere.</>],
-  ['ssh keys', <>Sets <code>core.sshCommand</code> to force a specific key with <code>IdentitiesOnly=yes</code>, preventing agent fallback — the same key doubles as your signing key.</>],
-  ['commit signing', <>Per-profile GPG or SSH signing key. Switch and your verified-commit badge follows the right identity automatically.</>],
+  [
+    'Your identity follows the repo.',
+    <>
+      Pin a profile once with <code>gitswitch pin work</code>. Your name and
+      email stay with that repo, even if your global Git identity is different.
+    </>,
+  ],
+  [
+    'Use multiple GitHub accounts at once.',
+    <>
+      Each terminal resolves <code>gh</code> commands for the repo you’re
+      working in. Keep work and personal sessions open at the same time—without
+      one terminal changing the account another uses.
+    </>,
+  ],
+  [
+    'Match the right SSH and signing keys.',
+    <>
+      Attach SSH and GPG or SSH signing keys to a profile. gitswitch selects the
+      matching SSH key and signing identity when you switch profiles.
+    </>,
+  ],
+  [
+    'Fix a commit made under the wrong identity.',
+    <>
+      Use <code>gitswitch reauthor</code> to rewrite the author and committer on
+      commits that already exist. Review shared history before rewriting it.
+    </>,
+  ],
+  [
+    'Works in your terminal—and agent-launched shells.',
+    <>
+      Use the same repo-aware behavior in your regular shell, editor terminal,
+      or a coding agent working inside a repo. <code>gitswitch claude</code> can
+      install the Claude Code skill.
+    </>,
+  ],
 ]
 
 const ALTERNATIVES: Array<[string, string, ReactNode]> = [
-  ['if', 'already using includeIf?', <>Git's <code>includeIf</code> switches <code>user.name</code>/<code>user.email</code> per directory tree, if you keep repos in a strict folder structure and hand-author each conditional block. <Link to="/docs/$" params={{ _splat: 'routing/identity-awareness' }}>Identity awareness</Link> does the same job automatically, per repo instead of per folder, then goes further: SSH keys, GPG/SSH signing, <code>gh</code> account, and session isolation across terminals, switched together.</>],
-  ['ssh', 'already using SSH host aliases?', <>Hand-maintaining <code>~/.ssh/config</code> host aliases and rewriting remotes per account works, but it's manual and per-machine. gitswitch sets <code>core.sshCommand</code> with <code>IdentitiesOnly=yes</code> per profile, same isolation, switched with the rest of your identity in one command.</>],
-  ['cli', 'already using another switcher?', <>Most git account-switcher CLIs stop at commit identity or <code>gh</code> auth. gitswitch adds session isolation (each terminal resolves its own <code>gh</code> account, no shared global state), a mouse-driven TUI, <code>gitswitch reauthor</code> to fix commits already made under the wrong identity, and a Claude Code skill for AI agents.</>],
-  ['gui', 'prefer a GUI or IDE extension?', <>Editor-specific switchers only work inside that one editor. gitswitch is terminal-native: the same behavior in your shell, an editor's integrated terminal, or an AI coding agent's sandbox.</>],
-]
-
-const COMPARE: Array<[string, string, string]> = [
-  ['github api tokens', '✓', '✓ (optional)'],
-  ['commit name + email', '✗', '✓'],
-  ['ssh key per identity', '✗', '✓'],
-  ['gpg signing key', '✗', '✓'],
-  ['per-repo auto-switch', '✗', '✓'],
-  ['parallel gh accounts (multi-terminal)', '✗ (one global account)', '✓ (session isolation)'],
-  ['interactive TUI (mouse + keyboard)', '✗', '✓'],
-  ['no runtime deps', '✗', '✓ (single binary)'],
+  [
+    'if',
+    'Using includeIf?',
+    <>
+      Keep your existing setup or start pinning repos individually. gitswitch
+      can manage Git identity, GitHub account, and keys together instead of
+      requiring hand-maintained directory rules.
+    </>,
+  ],
+  [
+    'ssh',
+    'Using SSH host aliases?',
+    <>
+      gitswitch can select a profile’s SSH key with <code>core.sshCommand</code>{' '}
+      and <code>IdentitiesOnly=yes</code>, alongside the rest of that profile.
+    </>,
+  ],
+  [
+    'cli',
+    'Already using another switcher?',
+    <>
+      Start with one repo. Add other profiles and session isolation when you
+      need them.
+    </>,
+  ],
 ]
 
 function Home() {
   return (
     <main>
-      {/* Hero */}
       <section className="hero">
         <div className="hero-content rise-in">
-          <pre className="hero-logo" aria-hidden="true">{LOGO}</pre>
-          <div className="hero-badge">{VERSION} · written in go</div>
+          <div className="hero-badge">
+            Git identity for multi-account developers
+          </div>
           <h1>
-            Git,
-            <br />
-            <em>done right.</em>
+            Every repo gets the <em>right GitHub identity.</em>
             <span className="blink" />
           </h1>
           <p className="hero-sub">
-            <span className="comment"># No more committing with the wrong account.</span>
-            <br />Run multiple GitHub accounts in parallel, or set one up for the first time. One command either way.
+            gitswitch keeps your commit author, GitHub CLI account, SSH key, and
+            signing identity aligned with the repo you’re in. Run work,
+            personal, and AI-agent sessions side by side—without flipping one
+            shared account back and forth.
           </p>
           <div className="hero-actions">
             <a href="#install" className="btn-primary">
-              install now
+              Install gitswitch
             </a>
-            <a
-              href="https://github.com/aksisonline/gitswitch"
-              target="_blank"
-              rel="noreferrer"
-              className="btn-ghost"
-            >
-              view source
+            <a href="#how-it-works" className="btn-ghost">
+              See how it works
             </a>
           </div>
           <InstallTabs />
+          <p className="hero-meta">
+            {VERSION} · Open source · Written in Go
+            <br />
+            macOS, Linux, Windows
+          </p>
+          <p className="hero-meta">
+            New to Git?{' '}
+            <Link to="/docs/$" params={{ _splat: 'guides/beginners' }}>
+              Get set up from scratch →
+            </Link>
+          </p>
         </div>
         <TuiWidget />
       </section>
 
-      {/* Start here */}
       <section className="section">
-        <div className="section-label">new to git?</div>
+        <div className="section-label">the problem</div>
         <h2 className="section-title">
-          you're one login <em>away</em> from done.
+          Git and GitHub don’t share <em>one identity setting.</em>
         </h2>
         <p className="section-sub">
-          No tutorial, no SSH keys to generate by hand, no config files to edit. Install
-          gitswitch, log in once, and you're set up right, first commit or five hundredth.
+          <code>gh auth switch</code> changes the account used by GitHub CLI.
+          Git keeps your commit name and email separately, while SSH and commit
+          signing use their own keys.
+        </p>
+        <p className="section-sub">
+          When you work across accounts, switching one setting can leave another
+          behind. gitswitch brings them together in a profile and applies the
+          right identity for each repo.
         </p>
       </section>
 
-      {/* Features */}
-      <section id="features" className="section">
-        <div className="section-label">capabilities</div>
-        <h2 className="section-title">
-          everything <em>gh auth switch</em>
-          <br />
-          can't do.
+      <section className="section" aria-labelledby="parallel-title">
+        <div className="section-label">two terminals · two identities</div>
+        <h2 id="parallel-title" className="section-title">
+          Side by side. <em>Still yours.</em>
         </h2>
         <p className="section-sub">
-          GitHub CLI only manages API tokens. Your commit identity, the name and email
-          baked into every commit, is completely separate. gitswitch handles both.
+          Pin each repo once. With session isolation enabled, each terminal’s
+          GitHub commands use that repo’s account. Here’s an example with work
+          and personal profiles already set up.
         </p>
+        <div className="parallel-demo">
+          {[
+            ['work · ~/work/api', 'work', 'work-account'],
+            ['personal · ~/personal/site', 'personal', 'personal-account'],
+          ].map(([title, profile, account]) => (
+            <div className="tui-frame" key={profile}>
+              <div className="frame-title">{title}</div>
+              <pre className="demo-commands">
+                <code>
+                  <span className="prompt">$</span> gitswitch pin {profile}
+                  {'\n'}
+                  <span className="prompt">$</span> git config user.email{'\n'}
+                  <span className="demo-result">
+                    {profile === 'work'
+                      ? 'you@company.com'
+                      : 'you@personal.dev'}
+                  </span>
+                  {'\n\n'}
+                  <span className="prompt">$</span> gh api user --jq .login
+                  {'\n'}
+                  <span className="demo-result">{account}</span>
+                </code>
+              </pre>
+            </div>
+          ))}
+        </div>
+        <p className="section-sub trust-note">
+          A router, not a credential vault. Your keys stay in{' '}
+          <code>~/.ssh/</code>, your tokens stay in your OS keychain. gitswitch
+          decides which identity applies to the repo you’re in.{' '}
+          <Link to="/docs/$" params={{ _splat: 'get-started/intro' }}>
+            Read how it works →
+          </Link>
+        </p>
+      </section>
+
+      <section id="features" className="section">
+        <div className="section-label">features</div>
+        <h2 className="section-title">
+          Your identity <em>follows the repo.</em>
+        </h2>
         <div className="features-grid reveal-group">
           {FEATURES.map(([title, desc], i) => (
-            <div className={`feature-card reveal${i === 0 ? ' feature-card--lead' : ''}`} key={title}>
-              <div className="feature-marker">[{String(i + 1).padStart(2, '0')}]</div>
+            <div
+              className={`feature-card reveal${i === 0 ? ' feature-card--lead' : ''}`}
+              key={title}
+            >
+              <div className="feature-marker">
+                [{String(i + 1).padStart(2, '0')}]
+              </div>
               <div className="feature-title">{title}</div>
               <div className="feature-desc">{desc}</div>
             </div>
@@ -153,51 +243,35 @@ function Home() {
         </div>
       </section>
 
-      {/* Compare */}
-      <section className="section">
-        <div className="section-label">comparison</div>
+      <section id="how-it-works" className="section">
+        <div className="section-label">how it works</div>
         <h2 className="section-title">
-          vs <em>gh auth switch</em>
+          Log in. Pin a repo. <em>Keep working.</em>
         </h2>
-        <p className="section-sub">
-          Two tools, two different problems. gitswitch handles what the GitHub CLI
-          intentionally ignores.
-        </p>
-        <div className="compare-wrap">
-          <table className="compare-table">
-            <thead>
-              <tr>
-                <th>capability</th>
-                <th>
-                  <code>gh auth switch</code>
-                </th>
-                <th className="col-gitswitch">
-                  <code>gitswitch</code>
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {COMPARE.map(([cap, gh, gs]) => (
-                <tr key={cap}>
-                  <td>{cap}</td>
-                  <td className={gh.startsWith('✗') ? 'no' : 'check'}>{gh}</td>
-                  <td className="col-gitswitch check">{gs}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+        <ol className="setup-steps">
+          <li>
+            <strong>Log in once.</strong> <code>gitswitch login</code> hands off
+            to
+            <code>gh auth login</code> and creates your profile—no token to copy
+            into another tool.
+          </li>
+          <li>
+            <strong>Add your identities.</strong> Set the name and email for
+            each profile; attach SSH or signing keys if you use them.
+          </li>
+          <li>
+            <strong>Pin a repo.</strong> Run <code>gitswitch pin work</code> in
+            a repo. Then keep using <code>git</code> and <code>gh</code> as
+            usual.
+          </li>
+        </ol>
       </section>
 
-      {/* Alternatives */}
       <section className="section">
-        <div className="section-label">already got a setup?</div>
+        <div className="section-label">already have a Git setup?</div>
         <h2 className="section-title">
-          gitswitch <em>plays well</em> with what you have.
+          Start with <em>one repo.</em>
         </h2>
-        <p className="section-sub">
-          You don't have to be starting from zero. Here's how it fits in.
-        </p>
         <div className="alt-list reveal-group">
           {ALTERNATIVES.map(([marker, title, desc]) => (
             <div className="alt-row reveal" key={title}>
@@ -211,52 +285,22 @@ function Home() {
         </div>
       </section>
 
-      {/* Install */}
       <section id="install" className="section">
         <div className="section-label">install</div>
-        <h2 className="section-title">up in 30 seconds.</h2>
+        <h2 className="section-title">
+          Get <em>gitswitch.</em>
+        </h2>
+        <p className="section-sub">
+          The Go CLI from gitswitch.dev for parallel GitHub identity isolation.
+          Pick the install method for your platform.
+        </p>
         <InstallList />
       </section>
 
-      {/* Roadmap */}
-      <section id="roadmap" className="section">
-        <div className="section-label">looking ahead</div>
-        <h2 className="section-title">
-          what's <em>next</em>
-        </h2>
-        <p className="section-sub">gitswitch is Go all the way. Here's what's shipping.</p>
-        <div className="roadmap-grid">
-          <div className="tui-frame">
-            <div className="frame-title">shipped · stable</div>
-            <div className="frame-body">
-              <p><strong>Session isolation:</strong> any number of terminals, any number of GitHub accounts, no fighting over <code>gh</code>'s single global account.</p>
-              <p><strong>Pins write into the repo:</strong> <code>gitswitch pin work</code> sticks for good, without touching your global identity.</p>
-              <p><strong>GitHub login:</strong> <code>gitswitch login</code> delegates to <code>gh auth login</code> — no custom OAuth app, no token juggling, no manual config.</p>
-              <p><strong><code>gitswitch reauthor</code>:</strong> rewrites author/committer identity on commits already made under the wrong profile.</p>
-              <p><a href="https://github.com/aksisonline/gitswitch/releases" target="_blank" rel="noreferrer">full changelog ↗</a></p>
-            </div>
-          </div>
-          <div className="tui-frame">
-            <div className="frame-title">coming up</div>
-            <div className="frame-body">
-              <p><strong>Multi-host profiles:</strong> one profile, multiple GitHub hosts (github.com + github.corp.com), each with its own key and token.</p>
-            </div>
-          </div>
-          <div className="tui-frame">
-            <div className="frame-title">on the horizon</div>
-            <div className="frame-body">
-              <p><strong>Team presets:</strong> <code>gitswitch apply &lt;url&gt;</code> bootstraps all profiles from a shared signed config.</p>
-              <p><strong>In-repo config:</strong> <code>.gitswitch.yaml</code> declares required profiles and identity policies.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* FAQ */}
       <section className="section">
         <div className="section-label">faq</div>
         <h2 className="section-title">
-          questions, <em>answered</em>.
+          Questions, <em>answered.</em>
         </h2>
         <div className="faq-list reveal-group">
           {FAQ.map(([q, a]) => (

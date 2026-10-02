@@ -9,11 +9,12 @@ export default function Footer() {
       <div className="footer-inner">
         <div className="footer-col">
           <div className="footer-brand">
-            <span className="prompt">$</span> gitswitch <span className="star">✦</span>
+            <span className="prompt">$</span> gitswitch{' '}
+            <span className="star">✦</span>
           </div>
           <p className="footer-tag">
-            Run multiple GitHub accounts in parallel on the same machine, plus name,
-            email, SSH key, and GPG signing, switched instantly.
+            Run multiple GitHub accounts in parallel. Keep the right identity
+            with every repo.
           </p>
           <p className="footer-meta">
             <span>{VERSION}</span> · Apache-2.0 · made by{' '}
@@ -66,7 +67,7 @@ export default function Footer() {
               target="_blank"
               rel="noreferrer"
             >
-              releases
+              changelog
             </a>
             <Link to="/privacy">privacy</Link>
           </div>

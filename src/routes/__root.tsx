@@ -1,4 +1,9 @@
-import { HeadContent, Outlet, Scripts, createRootRoute } from '@tanstack/react-router'
+import {
+  HeadContent,
+  Outlet,
+  Scripts,
+  createRootRoute,
+} from '@tanstack/react-router'
 import Footer from '#/components/Footer'
 import Header from '#/components/Header'
 import EasterEggs from '#/components/EasterEggs'
@@ -7,9 +12,9 @@ import { ThemeProvider } from '#/lib/theme-context'
 import { THEME_INIT_SCRIPT } from '#/lib/themes'
 import appCss from '#/styles.css?url'
 
-const TITLE = 'gitswitch: Run Multiple GitHub Accounts in Parallel'
+const TITLE = 'gitswitch: Every Repo Gets the Right GitHub Identity'
 const DESC =
-  'Run multiple GitHub accounts in parallel on one machine, for developers and AI coding agents alike. One command handles identity, SSH keys, and GPG signing.'
+  'Keep Git and GitHub identities correct for every repo. Run work, personal, and coding-agent sessions in parallel with gitswitch, the open-source Go CLI.'
 const OG_IMAGE_ALT =
   'gitswitch terminal UI in the Dracula theme, showing the profile list next to the "Git, done right." hero headline'
 
@@ -18,11 +23,15 @@ const softwareSchema = {
   '@type': 'SoftwareApplication',
   name: 'gitswitch',
   applicationCategory: 'DeveloperApplication',
-  operatingSystem: 'macOS, Linux',
+  operatingSystem: 'macOS, Linux, Windows',
   description: DESC,
   url: 'https://gitswitch.dev',
   sameAs: 'https://github.com/aksisonline/gitswitch',
-  author: { '@type': 'Person', name: 'Abhiram Kanna', url: 'https://abhiramkanna.com' },
+  author: {
+    '@type': 'Person',
+    name: 'Abhiram Kanna',
+    url: 'https://abhiramkanna.com',
+  },
   license: 'https://github.com/aksisonline/gitswitch/blob/main/LICENSE',
 }
 
@@ -39,7 +48,10 @@ export const Route = createRootRoute({
           'multiple github accounts, github accounts in parallel, parallel github accounts same machine, session isolation gh cli, gh cli multiple accounts, git account switcher, gitswitch, git-switch, git-switcher, git-manager, git-identity-manager, git config easy switching, git identity manager, multiple git accounts, switch git user, git ssh key management, git profile switcher, git commit identity, github account switcher, git gpg signing, claude code git skill, git setup for ai coding agents, git setup for beginners, first git commit setup, git config automatic setup, gh cli setup no ssh keys',
       },
       { name: 'author', content: 'Abhiram Kanna' },
-      { name: 'robots', content: 'index, follow, max-image-preview:large, max-snippet:-1' },
+      {
+        name: 'robots',
+        content: 'index, follow, max-image-preview:large, max-snippet:-1',
+      },
       { property: 'og:type', content: 'website' },
       { property: 'og:title', content: TITLE },
       { property: 'og:description', content: DESC },

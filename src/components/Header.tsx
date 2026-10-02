@@ -28,13 +28,13 @@ export default function Header() {
           </Link>
         </li>
         <li>
-          <Link to="/" hash="roadmap">
-            roadmap
+          <Link to="/" hash="how-it-works">
+            how it works
           </Link>
         </li>
       </ul>
       <div className="nav-right">
-<button
+        <button
           className="theme-tag"
           onClick={cycle}
           title="Cycle theme (press c)"

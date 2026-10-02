@@ -1892,3 +1892,47 @@ html.crt body {
     font-size: 1.5rem;
   }
 }
+
+.hero-meta {
+  font-size: 0.75rem;
+  line-height: 1.8;
+  color: var(--muted);
+  margin-top: 1rem;
+}
+.hero-meta a {
+  color: var(--accent);
+}
+.parallel-demo {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.5rem;
+}
+.demo-commands {
+  padding: 1.5rem;
+  margin: 0;
+  overflow-x: auto;
+  font-size: 0.8rem;
+  line-height: 1.9;
+}
+.demo-result {
+  color: var(--accent);
+}
+.trust-note {
+  margin-top: 1.5rem;
+}
+.setup-steps {
+  padding-left: 1.5rem;
+  color: var(--text2);
+  line-height: 1.8;
+}
+.setup-steps li {
+  padding: 0.75rem 0 0.75rem 0.5rem;
+}
+.setup-steps strong {
+  color: var(--text);
+}
+@media (max-width: 640px) {
+  .parallel-demo {
+    grid-template-columns: 1fr;
+  }
+}
