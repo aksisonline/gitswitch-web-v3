@@ -53,38 +53,35 @@ const FEATURES: Array<[string, ReactNode]> = [
   [
     'Your identity follows the repo.',
     <>
-      Pin a profile once with <code>gitswitch pin work</code>. Your name and
-      email stay with that repo, even if your global Git identity is different.
+      <code>gitswitch pin work</code> once. Name and email stay with that repo,
+      whatever your global config says.
     </>,
   ],
   [
     'Use multiple GitHub accounts at once.',
     <>
-      Each terminal resolves <code>gh</code> commands for the repo you’re
-      working in. Keep work and personal sessions open at the same time—without
-      one terminal changing the account another uses.
+      Each terminal resolves <code>gh</code> for its own repo. No terminal
+      changes another’s account.
     </>,
   ],
   [
     'Match the right SSH and signing keys.',
     <>
-      Attach SSH and GPG or SSH signing keys to a profile. gitswitch selects the
-      matching SSH key and signing identity when you switch profiles.
+      Attach SSH and GPG keys to a profile. They switch with it.
     </>,
   ],
   [
     'Fix a commit made under the wrong identity.',
     <>
-      Use <code>gitswitch reauthor</code> to rewrite the author and committer on
-      commits that already exist. Review shared history before rewriting it.
+      <code>gitswitch reauthor</code> rewrites author and committer on existing
+      commits. Careful with shared history.
     </>,
   ],
   [
     'Works in your terminal—and agent-launched shells.',
     <>
-      Use the same repo-aware behavior in your regular shell, editor terminal,
-      or a coding agent working inside a repo. <code>gitswitch claude</code> can
-      install the Claude Code skill.
+      Same behavior in your shell, editor, or coding agent.{' '}
+      <code>gitswitch claude</code> installs the Claude Code skill.
     </>,
   ],
 ]
@@ -94,9 +91,8 @@ const ALTERNATIVES: Array<[string, string, ReactNode]> = [
     'if',
     'Using includeIf?',
     <>
-      Keep your existing setup or start pinning repos individually. gitswitch
-      can manage Git identity, GitHub account, and keys together instead of
-      requiring hand-maintained directory rules.
+      Keep it, or pin repos one by one instead of hand-maintaining directory
+      rules.
     </>,
   ],
   [
@@ -122,18 +118,14 @@ function Home() {
     <main>
       <section className="hero">
         <div className="hero-content rise-in">
-          <div className="hero-badge">
-            Git identity for multi-account developers
-          </div>
+          <div className="hero-badge">{VERSION} · written in go</div>
           <h1>
             Every repo gets the <em>right GitHub identity.</em>
             <span className="blink" />
           </h1>
           <p className="hero-sub">
-            gitswitch keeps your commit author, GitHub CLI account, SSH key, and
-            signing identity aligned with the repo you’re in. Run work,
-            personal, and AI-agent sessions side by side—without flipping one
-            shared account back and forth.
+            Commit author, <code>gh</code> account, SSH key, and signing key,
+            matched to the repo you’re in. Run work and personal side by side.
           </p>
           <div className="hero-actions">
             <a href="#install" className="btn-primary">
@@ -145,12 +137,7 @@ function Home() {
           </div>
           <InstallTabs />
           <p className="hero-meta">
-            {VERSION} · Open source · Written in Go
-            <br />
-            macOS, Linux, Windows
-          </p>
-          <p className="hero-meta">
-            New to Git?{' '}
+            macOS, Linux, Windows · New to Git?{' '}
             <Link to="/docs/$" params={{ _splat: 'guides/beginners' }}>
               Get set up from scratch →
             </Link>
@@ -165,14 +152,9 @@ function Home() {
           Git and GitHub don’t share <em>one identity setting.</em>
         </h2>
         <p className="section-sub">
-          <code>gh auth switch</code> changes the account used by GitHub CLI.
-          Git keeps your commit name and email separately, while SSH and commit
-          signing use their own keys.
-        </p>
-        <p className="section-sub">
-          When you work across accounts, switching one setting can leave another
-          behind. gitswitch brings them together in a profile and applies the
-          right identity for each repo.
+          <code>gh auth switch</code> only changes the GitHub CLI account. Your
+          commit name, email, SSH key, and signing key live elsewhere. gitswitch
+          bundles them into one profile per repo.
         </p>
       </section>
 
@@ -182,9 +164,8 @@ function Home() {
           Side by side. <em>Still yours.</em>
         </h2>
         <p className="section-sub">
-          Pin each repo once. With session isolation enabled, each terminal’s
-          GitHub commands use that repo’s account. Here’s an example with work
-          and personal profiles already set up.
+          Pin each repo once. Each terminal’s <code>gh</code> commands use that
+          repo’s account.
         </p>
         <div className="parallel-demo">
           {[
@@ -213,9 +194,8 @@ function Home() {
           ))}
         </div>
         <p className="section-sub trust-note">
-          A router, not a credential vault. Your keys stay in{' '}
-          <code>~/.ssh/</code>, your tokens stay in your OS keychain. gitswitch
-          decides which identity applies to the repo you’re in.{' '}
+          A router, not a credential vault. Keys stay in <code>~/.ssh/</code>,
+          tokens in your OS keychain.{' '}
           <Link to="/docs/$" params={{ _splat: 'get-started/intro' }}>
             Read how it works →
           </Link>
@@ -290,10 +270,6 @@ function Home() {
         <h2 className="section-title">
           Get <em>gitswitch.</em>
         </h2>
-        <p className="section-sub">
-          The Go CLI from gitswitch.dev for parallel GitHub identity isolation.
-          Pick the install method for your platform.
-        </p>
         <InstallList />
       </section>
 

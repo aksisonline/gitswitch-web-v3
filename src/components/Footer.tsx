@@ -37,6 +37,20 @@ export default function Footer() {
                 loading="lazy"
               />
             </a>
+            <a
+              href="https://www.producthunt.com/products/gitswitch-2?embed=true&utm_source=badge-featured&utm_medium=badge&utm_campaign=badge-gitswitch-2"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="footer-badge"
+            >
+              <img
+                src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1219704&theme=neutral&t=1792475667281"
+                alt="gitswitch on Product Hunt"
+                width={250}
+                height={54}
+                loading="lazy"
+              />
+            </a>
             <BuyMeACoffeeButton />
           </div>
         </div>

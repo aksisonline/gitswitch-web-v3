@@ -1175,11 +1175,12 @@ kbd {
 .footer-badge img {
   display: block;
   max-width: 100%;
-  height: auto;
+  height: 40px;
+  width: auto;
 }
 .bmc-button-slot .bmc-btn {
   min-width: unset !important;
-  height: 35px !important;
+  height: 40px !important;
   padding: 0 12px !important;
   border-radius: 8px !important;
   font-size: 12px !important;
