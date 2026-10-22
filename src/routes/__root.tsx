@@ -16,7 +16,7 @@ const TITLE = 'gitswitch: Every Repo Gets the Right GitHub Identity'
 const DESC =
   'Keep Git and GitHub identities correct for every repo. Run work, personal, and coding-agent sessions in parallel with gitswitch, the open-source Go CLI.'
 const OG_IMAGE_ALT =
-  'gitswitch terminal UI in the Dracula theme, showing the profile list next to the "Git, done right." hero headline'
+  'gitswitch terminal UI in the Dracula theme, showing the profile list next to the "Every repo gets the right GitHub identity." headline'
 
 const softwareSchema = {
   '@context': 'https://schema.org',

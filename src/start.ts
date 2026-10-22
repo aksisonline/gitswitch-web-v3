@@ -22,7 +22,7 @@ const OG_TITLE = 'get.gitswitch.dev — one-command gitswitch install'
 const OG_DESC =
   'curl -fsSL https://get.gitswitch.dev | bash installs gitswitch and tells your coding agent exactly what to do next.'
 const OG_IMAGE_ALT =
-  'gitswitch terminal UI in the Dracula theme, showing the profile list next to the "Git, done right." hero headline'
+  'gitswitch terminal UI in the Dracula theme, showing the profile list next to the "Every repo gets the right GitHub identity." headline'
 
 function escapeHtml(s: string): string {
   return s.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;')

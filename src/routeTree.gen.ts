@@ -10,7 +10,6 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as PrivacyRouteImport } from './routes/privacy'
-import { Route as OgImageGeneratorRouteImport } from './routes/og-image-generator'
 import { Route as OgImageRouteImport } from './routes/og-image'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as DocsSplatRouteImport } from './routes/docs/$'
@@ -19,11 +18,6 @@ import { Route as ApiSearchRouteImport } from './routes/api/search'
 const PrivacyRoute = PrivacyRouteImport.update({
   id: '/privacy',
   path: '/privacy',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const OgImageGeneratorRoute = OgImageGeneratorRouteImport.update({
-  id: '/og-image-generator',
-  path: '/og-image-generator',
   getParentRoute: () => rootRouteImport,
 } as any)
 const OgImageRoute = OgImageRouteImport.update({
@@ -50,7 +44,6 @@ const ApiSearchRoute = ApiSearchRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/og-image': typeof OgImageRoute
-  '/og-image-generator': typeof OgImageGeneratorRoute
   '/privacy': typeof PrivacyRoute
   '/api/search': typeof ApiSearchRoute
   '/docs/$': typeof DocsSplatRoute
@@ -58,7 +51,6 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/og-image': typeof OgImageRoute
-  '/og-image-generator': typeof OgImageGeneratorRoute
   '/privacy': typeof PrivacyRoute
   '/api/search': typeof ApiSearchRoute
   '/docs/$': typeof DocsSplatRoute
@@ -67,42 +59,21 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/og-image': typeof OgImageRoute
-  '/og-image-generator': typeof OgImageGeneratorRoute
   '/privacy': typeof PrivacyRoute
   '/api/search': typeof ApiSearchRoute
   '/docs/$': typeof DocsSplatRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths:
-    | '/'
-    | '/og-image'
-    | '/og-image-generator'
-    | '/privacy'
-    | '/api/search'
-    | '/docs/$'
+  fullPaths: '/' | '/og-image' | '/privacy' | '/api/search' | '/docs/$'
   fileRoutesByTo: FileRoutesByTo
-  to:
-    | '/'
-    | '/og-image'
-    | '/og-image-generator'
-    | '/privacy'
-    | '/api/search'
-    | '/docs/$'
-  id:
-    | '__root__'
-    | '/'
-    | '/og-image'
-    | '/og-image-generator'
-    | '/privacy'
-    | '/api/search'
-    | '/docs/$'
+  to: '/' | '/og-image' | '/privacy' | '/api/search' | '/docs/$'
+  id: '__root__' | '/' | '/og-image' | '/privacy' | '/api/search' | '/docs/$'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   OgImageRoute: typeof OgImageRoute
-  OgImageGeneratorRoute: typeof OgImageGeneratorRoute
   PrivacyRoute: typeof PrivacyRoute
   ApiSearchRoute: typeof ApiSearchRoute
   DocsSplatRoute: typeof DocsSplatRoute
@@ -115,13 +86,6 @@ declare module '@tanstack/react-router' {
       path: '/privacy'
       fullPath: '/privacy'
       preLoaderRoute: typeof PrivacyRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/og-image-generator': {
-      id: '/og-image-generator'
-      path: '/og-image-generator'
-      fullPath: '/og-image-generator'
-      preLoaderRoute: typeof OgImageGeneratorRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/og-image': {
@@ -158,7 +122,6 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   OgImageRoute: OgImageRoute,
-  OgImageGeneratorRoute: OgImageGeneratorRoute,
   PrivacyRoute: PrivacyRoute,
   ApiSearchRoute: ApiSearchRoute,
   DocsSplatRoute: DocsSplatRoute,
