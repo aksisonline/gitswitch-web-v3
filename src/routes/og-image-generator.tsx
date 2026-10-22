@@ -20,14 +20,14 @@
  *        "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" \
  *          --headless --disable-gpu --hide-scrollbars \
  *          --window-size=1200,630 --screenshot=/tmp/og-image.png \
- *          "http://localhost:3000/og-image"
+ *          "http://localhost:3000/og-image-generator"
  *   4. cp /tmp/og-image.png public/og-image.png
  *   5. Update OG_IMAGE_ALT in src/routes/__root.tsx to describe the new image.
  */
 import { createFileRoute } from '@tanstack/react-router'
 import { VERSION } from '../generated/meta'
 
-export const Route = createFileRoute('/og-image')({
+export const Route = createFileRoute('/og-image-generator')({
   head: () => ({
     meta: [
       { title: 'og-image generator' },
